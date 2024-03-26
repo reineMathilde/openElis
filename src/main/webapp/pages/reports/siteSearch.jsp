@@ -22,7 +22,18 @@
 <c:set var="formName" value="${form.formName}"/>
 
 <script type="text/javascript" src="scripts/ajaxCalls.js?" ></script>
+<script type="text/javascript" src="select2/js/select2.min.js"></script>
+<link rel="stylesheet" type="text/css" href="select2/css/select2.min.css">
+<script type="text/javascript" src="scripts/jquery_ui/jquery-ui.min.js"></script>
+<link rel="stylesheet" type="text/css" href="scripts/jquery_ui/jquery-ui.min.css"/>
+<link rel="stylesheet" type="text/css" href="scripts/jquery_ui/jquery-ui.theme.min.css"/>
 <script type="text/javascript">
+
+function pageOnLoad() {
+	jQuery("#requesterId").select2();
+	jQuery("#requesterDepartmentId").select2();
+	
+}
 
 var useReferralSiteList = <%= useReferralSiteList%>;
 var useSiteDepartment = <%= useSiteDepartment %>;
@@ -75,10 +86,11 @@ function siteDepartmentSuccess (xhr) {
     <td>
         <%= MessageUtil.getContextualMessage( "sample.entry.project.siteName" ) %>:
     		<form:select path="referringSiteId" 
+    				 cssClass="referringSiteClass"
     				 id="requesterId" 
                      onchange="siteListChanged(this);"
 	 >
-            <option ></option>
+            <option value=" "></option>
             <form:options items="${form.referringSiteList}" itemValue="id" itemLabel="value"/>
             </form:select>
     </td>
@@ -90,6 +102,7 @@ function siteDepartmentSuccess (xhr) {
 	    		<form:select path="referringSiteDepartmentId" 
 	    				 id="requesterDepartmentId" 
 	                     >
+	            <option value="0" ></option>
 	            <option value="0" ></option>
 	            <form:options items="${form.referringSiteDepartmentList}" itemValue="id" itemLabel="value"/>
 	            </form:select>

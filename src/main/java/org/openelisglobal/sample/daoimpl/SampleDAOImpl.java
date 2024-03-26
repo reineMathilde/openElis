@@ -687,11 +687,13 @@ public class SampleDAOImpl extends BaseDAOImpl<Sample, String> implements Sample
 
     @Override
     public List<Sample> getStudySamplesForSiteBetweenOrderDates(String referringSiteId, LocalDate lowerDate,
-            LocalDate upperDate) {
-        String hql = "FROM Sample s WHERE s.enteredDate BETWEEN :lowerDate AND :upperDate AND s.id IN (SELECT so.sample.id FROM SampleOrganization so WHERE so.organization.id = :requesterId )";
+            LocalDate upperDate, String projectCode) {
+        String hql = "FROM Sample s WHERE s.enteredDate BETWEEN :lowerDate AND :upperDate AND s.id IN (SELECT so.sample.id FROM SampleOrganization so WHERE so.organization.id = :requesterId ) "
+        		+ " AND s.id IN (SELECT sp.sample.id FROM SampleProject sp WHERE sp.project.id = :projectId )";
         try {
             Query<Sample> query = entityManager.unwrap(Session.class).createQuery(hql, Sample.class);
             query.setParameter("requesterId", Integer.parseInt(referringSiteId));
+            query.setParameter("projectId", Integer.parseInt(projectCode));
             query.setParameter("lowerDate", lowerDate.atStartOfDay());
             query.setParameter("upperDate", upperDate.atTime(LocalTime.MAX));
             return query.list();

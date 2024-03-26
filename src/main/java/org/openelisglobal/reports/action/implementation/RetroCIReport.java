@@ -113,4 +113,5 @@ public abstract class RetroCIReport extends Report implements IReportCreator {
      */
     @Override
     abstract public void initializeReport(ReportForm form);
+    
 }

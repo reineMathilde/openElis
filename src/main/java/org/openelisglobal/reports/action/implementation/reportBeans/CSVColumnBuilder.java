@@ -632,10 +632,11 @@ abstract public class CSVColumnBuilder {
         appendCrosstabPreamble(listName);
         query.append( // any Observation History items
                 "\n crosstab( " + "\n 'SELECT DISTINCT oh.sample_id as samp_id, oht.type_name, value "
-                        + "\n FROM observation_history AS oh, sample AS s, observation_history_type AS oht "
-                        + "\n WHERE s.collection_date >= date(''" + formatDateForDatabaseSql(lowDate) + "'') "
-                        + "\n AND s.collection_date <= date(''" + formatDateForDatabaseSql(highDate) + "'')"
-                        + "\n AND s.id = oh.sample_id AND oh.observation_history_type_id = oht.id order by 1;' "
+                        + "\n FROM observation_history AS oh, sample AS s, sample_item AS si, analysis AS a observation_history_type AS oht "
+                        + "\n WHERE "+byDate+" >= date(''" + formatDateForDatabaseSql(lowDate) + "'') "
+                        + "\n AND "+byDate+"  <= date(''" + formatDateForDatabaseSql(highDate) + "'')"
+                        + "\n AND s.id = oh.sample_id AND oh.observation_history_type_id = oht.id "
+                        + " AND s.id = si.samp_id AND si.id = a.sampitem_id order by 1;' "
                         + "\n , "
                         + "\n 'SELECT DISTINCT oht.type_name FROM observation_history_type AS oht ORDER BY 1;' " + // must
                                                                                                                    // be

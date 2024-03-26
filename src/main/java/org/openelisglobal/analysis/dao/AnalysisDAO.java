@@ -222,5 +222,5 @@ public interface AnalysisDAO extends BaseDAO<Analysis, String> {
     List<Analysis> getAnalysesByPriorityAndStatusId(OrderPriority priority, List<Integer> analysisStatusIds);
 
     List<Analysis> getStudyAnalysisForSiteBetweenResultDates(String referringSiteId, LocalDate lowerDate,
-            LocalDate upperDate);
+            LocalDate upperDate, String projectCode);
 }

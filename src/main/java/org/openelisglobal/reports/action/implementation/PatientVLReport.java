@@ -199,5 +199,5 @@ public abstract class PatientVLReport extends RetroCIPatientReport {
         return ANTIRETROVIRAL_STUDY_ID + ":" + ANTIRETROVIRAL_FOLLOW_UP_STUDY_ID + ":" + VL_STUDY_ID;
         // return ANTIRETROVIRAL_ID;
     }
-
+    
 }

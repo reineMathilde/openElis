@@ -1568,10 +1568,12 @@ public class AnalysisDAOImpl extends BaseDAOImpl<Analysis, String> implements An
 
     @Override
     public List<Analysis> getStudyAnalysisForSiteBetweenResultDates(String referringSiteId, LocalDate lowerDate,
-            LocalDate upperDate) {
-        String hql = "FROM Analysis a WHERE a.releasedDate BETWEEN :lowerDate AND :upperDate AND a.sampleItem.sample.id IN (SELECT so.sample.id FROM SampleOrganization so WHERE so.organization.id = :requesterId )";
+            LocalDate upperDate, String projectCode) {
+        String hql = "FROM Analysis a WHERE a.releasedDate BETWEEN :lowerDate AND :upperDate AND a.sampleItem.sample.id IN (SELECT so.sample.id FROM SampleOrganization so WHERE so.organization.id = :requesterId ) "
+        		+ " AND a.sampleItem.sample.id IN (SELECT sp.sample.id FROM SampleProject sp WHERE sp.project.id = :projectId )";
         try {
             Query<Analysis> query = entityManager.unwrap(Session.class).createQuery(hql, Analysis.class);
+            query.setParameter("projectId", Integer.parseInt(projectCode));
             query.setParameter("requesterId", Integer.parseInt(referringSiteId));
             query.setParameter("lowerDate", lowerDate.atStartOfDay());
             query.setParameter("upperDate", upperDate.atTime(LocalTime.MAX));

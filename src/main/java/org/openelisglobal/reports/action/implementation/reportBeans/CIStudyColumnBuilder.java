@@ -78,7 +78,7 @@ public abstract class CIStudyColumnBuilder extends CSVColumnBuilder {
      */
     protected String buildWhereSamplePatienOrgSQL(String lowDatePostgres, String highDatePostgres, String byDate) {
         String WHERE_SAMPLE_PATIENT_ORG = " WHERE " + "\n pat.id = sh.patient_id " + "\n AND sh.samp_id = s.id "
-                + "\n AND "+ byDate +" >= '" + lowDatePostgres + "'" + "\n AND "+ byDate +" <= '"
+                + "\n AND s.entered_date  >= '" + lowDatePostgres + "'" + "\n AND s.entered_date  <= '"
                 + highDatePostgres + "'" + "\n AND s.id = sp.samp_id " + "\n AND pat.person_id = per.id "
                 + "\n AND so.samp_id = s.id "
                 + ((GenericValidator.isBlankOrNull(projectStr)) ? "" : " AND sp.proj_id = " + projectStr)
@@ -115,11 +115,11 @@ public abstract class CIStudyColumnBuilder extends CSVColumnBuilder {
         query.append(" crosstab( " + "' SELECT s.id as s_id, type, value FROM Sample AS s " + " LEFT JOIN"
                 + " ( SELECT DISTINCT s.id as s_id , oh.observation_history_type_id AS type, oh.value AS value, oh.id "
                 + " FROM Sample as s, Observation_History AS oh, document_track as dt" + " WHERE oh.sample_id = s.id"
-                + " AND dt.row_id = s.id" + " AND " + byDate + " >= date(''" + lowDatePostgres + "'') " + " AND "
-                + byDate + " <= date(''" + highDatePostgres + "'')"
+                + " AND dt.row_id = s.id" + " AND s.entered_date >= date(''" + lowDatePostgres + "'') " + " AND  s.entered_date  "
+                +" <= date(''" + highDatePostgres + "'')"
                 + " AND oh.observation_history_type_id = (select id FROM observation_history_type WHERE type_name = ''"
                 + aOhTypeName + "'')  ORDER by 1,2, oh.id desc ) AS repeatCols" + " ON s.id = repeatCols.s_id"
-                + " WHERE " + byDate + " >= date(''" + lowDatePostgres + "'') " + " AND " + byDate + " <= date(''"
+                + " WHERE s.entered_date  >= date(''" + lowDatePostgres + "'') " + " AND s.entered_date  <= date(''"
                 + highDatePostgres + "'')" + "' )" + " AS " + aOhTypeName + " ( s_id NUMERIC(10) ");
         for (int col = 1; col <= maxCols; col++) {
             query.append(", \"").append(aOhTypeName).append(col).append("\" VARCHAR(100)");

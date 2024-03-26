@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+ <changeSet author="CIV developer Group" id="2403261" 
+ 	context="ci_regional,ci_general,CDIRetroCI">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="1">
+                SELECT COUNT(*) FROM menu WHERE element_id = 'menu_help_form_VL';
+			</sqlCheck>
+		</preConditions>
+		<comment> Update VL demand document</comment>
+        <update tableName="menu" schemaName="clinlims"> 
+			<column name="action_url" value="/documentation/FICHE_DEMANDE_CHARGE_VIRALE_VF_26032024.pdf" />
+            <where>element_id = 'menu_help_form_VL'</where>
+        </update>
+	</changeSet>
+    
+</databaseChangeLog>

@@ -199,5 +199,5 @@ public interface AnalysisService extends BaseObjectService<Analysis, String> {
             LocalDate upperDate);
 
     List<Analysis> getStudyAnalysisForSiteBetweenResultDates(String referringSiteId, LocalDate lowerDate,
-            LocalDate upperDate);
+            LocalDate upperDate, String projectCode);
 }

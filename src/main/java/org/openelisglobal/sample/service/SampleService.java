@@ -116,7 +116,7 @@ public interface SampleService extends BaseObjectService<Sample, String> {
     List<Sample> getSamplesForSiteBetweenOrderDates(String referringSiteId, LocalDate lowerDate, LocalDate upperDate);
 
     List<Sample> getStudySamplesForSiteBetweenOrderDates(String referringSiteId, LocalDate lowerDate,
-            LocalDate upperDate);
+            LocalDate upperDate, String projectCode);
 
     List<Sample> getSamplesByPriority(OrderPriority priority);
 }

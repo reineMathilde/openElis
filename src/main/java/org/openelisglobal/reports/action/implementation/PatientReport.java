@@ -245,7 +245,6 @@ public abstract class PatientReport extends Report {
                         form.getReferringSiteDepartmentId(), form.isOnlyResults(), form.getDateType(),
                         form.getLowerDateRange(), form.getUpperDateRange());
             }
-
         }
 
         sampleCompleteMap = new HashMap<>();

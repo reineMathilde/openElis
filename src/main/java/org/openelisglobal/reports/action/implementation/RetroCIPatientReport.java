@@ -121,7 +121,7 @@ public abstract class RetroCIPatientReport extends RetroCIReport {
                     && !GenericValidator.isBlankOrNull(form.getLowerDateRange())) {
                 reportSampleList = findReportSamplesForSite(form.getReferringSiteId(),
                         form.getReferringSiteDepartmentId(), form.isOnlyResults(), form.getDateType(),
-                        form.getLowerDateRange(), form.getUpperDateRange());
+                        form.getLowerDateRange(), form.getUpperDateRange(), form.getProjectCode());
             }
 
         }
@@ -149,7 +149,7 @@ public abstract class RetroCIPatientReport extends RetroCIReport {
     }
 
     private List<Sample> findReportSamplesForSite(String referringSiteId, String referringSiteDepartmentId,
-            boolean onlyResults, DateType dateType, String lowerDateRange, String upperDateRange) {
+            boolean onlyResults, DateType dateType, String lowerDateRange, String upperDateRange, String projectCode) {
         List<Sample> sampleList = new ArrayList<>();
         String sampleRequesterOrgId = GenericValidator.isBlankOrNull(referringSiteDepartmentId) ? referringSiteId
                 : referringSiteDepartmentId;
@@ -157,11 +157,11 @@ public abstract class RetroCIPatientReport extends RetroCIReport {
         if (DateType.ORDER_DATE.equals(dateType)) {
             sampleList = sampleService.getStudySamplesForSiteBetweenOrderDates(sampleRequesterOrgId,
                     DateUtil.convertStringDateToLocalDate(lowerDateRange),
-                    DateUtil.convertStringDateToLocalDate(upperDateRange));
+                    DateUtil.convertStringDateToLocalDate(upperDateRange), projectCode);
         } else {
             List<Analysis> analysises = analysisService.getStudyAnalysisForSiteBetweenResultDates(sampleRequesterOrgId,
                     DateUtil.convertStringDateToLocalDate(lowerDateRange),
-                    DateUtil.convertStringDateToLocalDate(upperDateRange));
+                    DateUtil.convertStringDateToLocalDate(upperDateRange), projectCode);
             sampleList = sampleService
                     .getSamplesByAnalysisIds(analysises.stream().map(e -> e.getId()).collect(Collectors.toList()));
 

@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.validator.GenericValidator;
 import org.openelisglobal.common.controller.BaseController;
 import org.openelisglobal.common.exception.LIMSRuntimeException;
@@ -24,6 +25,8 @@ import org.openelisglobal.common.form.BaseForm;
 import org.openelisglobal.common.log.LogEvent;
 import org.openelisglobal.common.services.IReportTrackingService;
 import org.openelisglobal.common.services.ReportTrackingService.ReportType;
+import org.openelisglobal.project.service.ProjectService;
+import org.openelisglobal.project.valueholder.Project;
 import org.openelisglobal.reports.action.implementation.IReportCreator;
 import org.openelisglobal.reports.action.implementation.IReportParameterSetter;
 import org.openelisglobal.reports.action.implementation.ReportImplementationFactory;
@@ -49,169 +52,195 @@ import net.sf.jasperreports.engine.JRException;
 @SessionAttributes("form")
 public class ReportController extends BaseController {
 
-    private static final String[] ALLOWED_FIELDS = new String[] { "report", "reportType", "type", "accessionDirect",
-            "highAccessionDirect", "patientNumberDirect", "patientUpperNumberDirect", "lowerDateRange",
-            "upperDateRange", "locationCode", "projectCode", "datePeriod", "lowerMonth", "lowerYear", "upperMonth",
-            "upperYear", "selectList.selection", "experimentId", "reportName", "selPatient", "analysisIds",
-            "referringSiteId", "referringSiteDepartmentId", "onlyResults", "dateType", "labSections", "priority",
-            "receptionTime", "vlStudyType" };
+	private static final String[] ALLOWED_FIELDS = new String[] { "report", "reportType", "type", "accessionDirect",
+			"highAccessionDirect", "patientNumberDirect", "patientUpperNumberDirect", "lowerDateRange",
+			"upperDateRange", "locationCode", "projectCode", "datePeriod", "lowerMonth", "lowerYear", "upperMonth",
+			"upperYear", "selectList.selection", "experimentId", "reportName", "selPatient", "analysisIds",
+			"referringSiteId", "referringSiteDepartmentId", "onlyResults", "dateType", "labSections", "priority",
+			"receptionTime", "vlStudyType" };
 
-    @Autowired
-    private ServletContext context;
+	@Autowired
+	private ServletContext context;
 
-    private static String reportPath = null;
-    private static String imagesPath = null;
+	private static String reportPath = null;
+	private static String imagesPath = null;
 
-    @ModelAttribute("form")
-    public BaseForm form() {
-        return new ReportForm();
-    }
+	@ModelAttribute("form")
+	public BaseForm form() {
+		return new ReportForm();
+	}
 
-    @InitBinder
-    public void initBinder(WebDataBinder binder) {
-        binder.setAllowedFields(ALLOWED_FIELDS);
-    }
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+		binder.setAllowedFields(ALLOWED_FIELDS);
+	}
 
-    @RequestMapping(value = "/Report", method = RequestMethod.GET)
-    public ModelAndView showReport(HttpServletRequest request, @ModelAttribute("form") BaseForm oldForm)
-            throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-        ReportForm newForm = resetSessionFormToType(oldForm, ReportForm.class);
-        newForm.setFormMethod(RequestMethod.GET);
+	@RequestMapping(value = "/Report", method = RequestMethod.GET)
+	public ModelAndView showReport(HttpServletRequest request, @ModelAttribute("form") BaseForm oldForm)
+			throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+		ReportForm newForm = resetSessionFormToType(oldForm, ReportForm.class);
+		newForm.setFormMethod(RequestMethod.GET);
 
-        newForm.setType(request.getParameter("type"));
-        newForm.setReport(request.getParameter("report"));
-        IReportParameterSetter setter = ReportImplementationFactory.getParameterSetter(request.getParameter("report"));
+		newForm.setType(request.getParameter("type"));
+		newForm.setReport(request.getParameter("report"));
+		IReportParameterSetter setter = ReportImplementationFactory.getParameterSetter(request.getParameter("report"));
 
-        if (setter != null) {
-            setter.setRequestParameters(newForm);
-        }
+		if (setter != null) {
+			setter.setRequestParameters(newForm);
+		}
 
-        return findForward(FWD_SUCCESS, newForm);
-    }
+		return findForward(FWD_SUCCESS, newForm);
+	}
 
-    @RequestMapping(value = "/ReportPrint", method = RequestMethod.GET)
-    public ModelAndView showReportPrint(HttpServletRequest request, HttpServletResponse response,
-            @ModelAttribute("form") @Valid ReportForm form, BindingResult result, SessionStatus status)
-            throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-        if (result.hasErrors()) {
-            saveErrors(result);
-            return findForward(FWD_FAIL, form);
-        }
+	@RequestMapping(value = "/ReportPrint", method = RequestMethod.GET)
+	public ModelAndView showReportPrint(HttpServletRequest request, HttpServletResponse response,
+			@ModelAttribute("form") @Valid ReportForm form, BindingResult result, SessionStatus status)
+			throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+		if (result.hasErrors()) {
+			saveErrors(result);
+			return findForward(FWD_FAIL, form);
+		}
 
-        LogEvent.logTrace("ReportController", "Log GET ", request.getParameter("report"));
-        IReportCreator reportCreator = ReportImplementationFactory.getReportCreator(request.getParameter("report"));
+		LogEvent.logTrace("ReportController", "Log GET ", request.getParameter("report"));
+		String reportName = request.getParameter("report");
+		if (reportName.equalsIgnoreCase("patientVL1")) {
+			form.setProjectCode(getVLProjectCode());
+		} else if (reportName.equalsIgnoreCase("patientEID1")) {
+			form.setProjectCode(getEIDProjectCode());
+		}
+		IReportCreator reportCreator = ReportImplementationFactory.getReportCreator(reportName);
 
-        if (reportCreator != null) {
-            reportCreator.setSystemUserId(getSysUserId(request));
-            reportCreator.setRequestedReport(request.getParameter("report"));
-            reportCreator.initializeReport(form);
-            reportCreator.setReportPath(getReportPath());
+		if (reportCreator != null) {
+			reportCreator.setSystemUserId(getSysUserId(request));
+			reportCreator.setRequestedReport(request.getParameter("report"));
+			reportCreator.initializeReport(form);
+			reportCreator.setReportPath(getReportPath());
 
-            HashMap<String, String> parameterMap = (HashMap<String, String>) reportCreator.getReportParameters();
-            parameterMap.put("SUBREPORT_DIR", getReportPath());
-            parameterMap.put("imagesPath", getImagesPath());
+			HashMap<String, String> parameterMap = (HashMap<String, String>) reportCreator.getReportParameters();
+			parameterMap.put("SUBREPORT_DIR", getReportPath());
+			parameterMap.put("imagesPath", getImagesPath());
 
-            try {
-                response.setContentType(reportCreator.getContentType());
-                String responseHeaderName = reportCreator.getResponseHeaderName();
-                String responseHeaderContent = reportCreator.getResponseHeaderContent();
-                if (!GenericValidator.isBlankOrNull(responseHeaderName)
-                        && !GenericValidator.isBlankOrNull(responseHeaderContent)) {
-                    response.setHeader(responseHeaderName, responseHeaderContent);
-                }
+			try {
+				response.setContentType(reportCreator.getContentType());
+				String responseHeaderName = reportCreator.getResponseHeaderName();
+				String responseHeaderContent = reportCreator.getResponseHeaderContent();
+				if (!GenericValidator.isBlankOrNull(responseHeaderName)
+						&& !GenericValidator.isBlankOrNull(responseHeaderContent)) {
+					response.setHeader(responseHeaderName, responseHeaderContent);
+				}
 
-                byte[] bytes = reportCreator.runReport();
+				byte[] bytes = reportCreator.runReport();
 
-                response.setContentLength(bytes.length);
+				response.setContentLength(bytes.length);
 
-                ServletOutputStream servletOutputStream = response.getOutputStream();
+				ServletOutputStream servletOutputStream = response.getOutputStream();
 
-                servletOutputStream.write(bytes, 0, bytes.length);
-                servletOutputStream.flush();
-                servletOutputStream.close();
-            } catch (IOException | SQLException | JRException | DocumentException | ParseException e) {
-                LogEvent.logErrorStack(e);
-                LogEvent.logDebug(e);
-            }
-        }
+				servletOutputStream.write(bytes, 0, bytes.length);
+				servletOutputStream.flush();
+				servletOutputStream.close();
+			} catch (IOException | SQLException | JRException | DocumentException | ParseException e) {
+				LogEvent.logErrorStack(e);
+				LogEvent.logDebug(e);
+			}
+		}
 
-        if ("patient".equals(request.getParameter("type"))) {
-            trackReports(reportCreator, request.getParameter("report"), ReportType.PATIENT);
-        }
+		if ("patient".equals(request.getParameter("type"))) {
+			trackReports(reportCreator, request.getParameter("report"), ReportType.PATIENT);
+		}
 
-        // signal to remove from from session
-        status.setComplete();
-        return null;
-    }
+		// signal to remove from from session
+		status.setComplete();
+		return null;
+	}
 
-    private void trackReports(IReportCreator reportCreator, String reportName, ReportType type) {
-        List<String> refIds = reportCreator.getReportedOrders() != null ? reportCreator.getReportedOrders()
-                : new ArrayList<>();
-        SpringContext.getBean(IReportTrackingService.class).addReports(refIds, type, reportName, getSysUserId(request));
-    }
+	private void trackReports(IReportCreator reportCreator, String reportName, ReportType type) {
+		List<String> refIds = reportCreator.getReportedOrders() != null ? reportCreator.getReportedOrders()
+				: new ArrayList<>();
+		SpringContext.getBean(IReportTrackingService.class).addReports(refIds, type, reportName, getSysUserId(request));
+	}
 
-    private String getReportPath() {
-        String reportPath = getReportPathValue();
-        if (reportPath.endsWith(File.separator)) {
-            return reportPath;
-        } else {
-            return reportPath + File.separator;
-        }
-    }
+	private String getReportPath() {
+		String reportPath = getReportPathValue();
+		if (reportPath.endsWith(File.separator)) {
+			return reportPath;
+		} else {
+			return reportPath + File.separator;
+		}
+	}
 
-    private String getReportPathValue() {
+	private String getReportPathValue() {
 
-        if (reportPath == null) {
-            // TODO csl this was added by external developer but it breaks the other reports
+		if (reportPath == null) {
+			// TODO csl this was added by external developer but it breaks the other reports
 //            SiteInformation reportsPath = siteInformationService.getSiteInformationByName("reportsDirectory");
 //            if (reportsPath != null) {
 //                reportPath = reportsPath.getValue();
 //                return reportPath;
 //            }
-            ClassLoader classLoader = getClass().getClassLoader();
-            reportPath = classLoader.getResource("reports").getPath();
-            try {
-                reportPath = URLDecoder.decode(reportPath, "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                LogEvent.logDebug(e);
-                throw new LIMSRuntimeException(e);
-            }
-        }
-        return reportPath;
-    }
+			ClassLoader classLoader = getClass().getClassLoader();
+			reportPath = classLoader.getResource("reports").getPath();
+			try {
+				reportPath = URLDecoder.decode(reportPath, "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				LogEvent.logDebug(e);
+				throw new LIMSRuntimeException(e);
+			}
+		}
+		return reportPath;
+	}
 
-    public String getImagesPath() {
-        if (imagesPath == null) {
-            imagesPath = context.getRealPath("") + "static" + File.separator + "images" + File.separator;
-            try {
-                imagesPath = URLDecoder.decode(imagesPath, "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                LogEvent.logDebug(e);
-                throw new LIMSRuntimeException(e);
-            }
-        }
-        return imagesPath;
-    }
+	public String getImagesPath() {
+		if (imagesPath == null) {
+			imagesPath = context.getRealPath("") + "static" + File.separator + "images" + File.separator;
+			try {
+				imagesPath = URLDecoder.decode(imagesPath, "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				LogEvent.logDebug(e);
+				throw new LIMSRuntimeException(e);
+			}
+		}
+		return imagesPath;
+	}
 
-    @Override
-    protected String findLocalForward(String forward) {
-        if (FWD_SUCCESS.equals(forward)) {
-            return "commonReportDefiniton";
-        } else if (FWD_FAIL.equals(forward)) {
-            return "commonReportDefiniton";
-        } else {
-            return "PageNotFound";
-        }
-    }
+	@Override
+	protected String findLocalForward(String forward) {
+		if (FWD_SUCCESS.equals(forward)) {
+			return "commonReportDefiniton";
+		} else if (FWD_FAIL.equals(forward)) {
+			return "commonReportDefiniton";
+		} else {
+			return "PageNotFound";
+		}
+	}
 
-    @Override
-    protected String getPageSubtitleKey() {
-        return "reports.add.params";
-    }
+	@Override
+	protected String getPageSubtitleKey() {
+		return "reports.add.params";
+	}
 
-    @Override
-    protected String getPageTitleKey() {
-        return "reports.add.params";
-    }
+	@Override
+	protected String getPageTitleKey() {
+		return "reports.add.params";
+	}
+
+	protected String getVLProjectCode() {
+		Project project = new Project();
+		project.setProjectName("Viral Load Results");
+		project = SpringContext.getBean(ProjectService.class).getProjectByName(project, false, false);
+		if (ObjectUtils.isNotEmpty(project)) {
+			return project.getId();
+		}
+		return null;
+	}
+
+	protected String getEIDProjectCode() {
+		Project project = new Project();
+		project.setProjectName("Early Infant Diagnosis for HIV Study");
+		project = SpringContext.getBean(ProjectService.class).getProjectByName(project, false, false);
+		if (ObjectUtils.isNotEmpty(project)) {
+			return project.getId();
+		}
+		return null;
+	}
 
 }
