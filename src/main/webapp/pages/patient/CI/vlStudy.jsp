@@ -463,7 +463,7 @@
 		<td class="observationsSubquestion"><spring:message
 				code="sample.project.priorVLLab" /></td>
 		<td><form:input path="observations.priorVLLab" cssClass="text"
-				id="vl.priorVLLab" maxlength="50" />
+				id="vl.priorVLLab" maxlength="100" />
 			<div id="vl.priorVLLabMessage" class="blank"></div></td>
 
 	</tr>

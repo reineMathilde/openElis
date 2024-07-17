@@ -184,10 +184,28 @@ function rejectEntry(index) {
 	}
 }
 
+function cancelOrderEntry(index) {
+	entering = false;	
+	if(window.confirm("<spring:message code='sample.eorder.confirm.cancel'/>")){
+		var externalOrderId = jQuery('#externalOrderId_' + index).val();	
+		if(externalOrderId){
+			const params = new URLSearchParams({
+				searchType: "DATE_STATUS",
+				startDate: jQuery('#startDate').val(),
+				endDate: jQuery('#endDate').val(),
+				statusId: jQuery('#statusId').val(),
+				externalOrderId: jQuery('#externalOrderId_' + index).val(),
+			});
+		window.location.href = "cancelElectronicOrders?" + params.toString();
+	}
+}
+}
+
 function markRowOutOfSync(index) {
 	/* jQuery('#enterButton_' + index).attr('disabled', 'disabled'); */
 	jQuery('#editButton_' + index).attr('disabled', 'disabled');
 	jQuery('#rejectButton_' + index).attr('disabled', 'disabled');
+	jQuery('#cancelOrderButton_' + index).attr('disabled', 'disabled');
 	jQuery('#eOrderRow_' + index).addClass('unsynced-resource');
 }
 
@@ -326,6 +344,7 @@ jQuery(document).ready( function() {
 	<c:forEach items="${form.eOrders}" var="eOrder" varStatus="iter">
 		<c:set var="entered" value="${not empty eOrder.labNumber}"/>
 		<c:set var="rejected" value="${not empty eOrder.qaEventId}"/>
+		<c:set var="cancelled" value="${eOrder.status=='Cancelled'}"/>
 		<tr id='eOrderRow_${iter.index}'> 
 	    <td>
 	       <c:out value="${iter.index + 1}"/>
@@ -361,14 +380,20 @@ jQuery(document).ready( function() {
 	       <c:out value="${eOrder.labNumber}"/>
 	    </td>
     	<td>
-		    <button type="button" id="editButton_${iter.index}" onclick="editOrder('${iter.index}')" ${(entered || rejected) ? 'disabled="disabled"' : '' }>
+		    <button type="button" id="editButton_${iter.index}" onclick="editOrder('${iter.index}')" ${(entered || rejected || cancelled) ? 'disabled="disabled"' : '' }>
 		    <spring:message code="study.eorder.action.edit"/>
 		    </button>
 	    </td>
 	    <td>
 	    	<form:hidden id="externalOrderId_${iter.index}" path="eOrders[${iter.index}].externalOrderId" htmlEscape="true" />
-		    <button type="button" id="rejectButton_${iter.index}" onclick="rejectOrder('${iter.index}')" ${(entered || rejected) ? 'disabled="disabled"' : '' }>
+		    <button type="button" id="rejectButton_${iter.index}" onclick="rejectOrder('${iter.index}')" ${(entered || rejected || cancelled) ? 'disabled="disabled"' : '' }>
 		    <spring:message code="study.eorder.action.reject"/>
+		    </button>
+	    </td>
+	    <td>
+	    	<form:hidden id="externalOrderId_${iter.index}" path="eOrders[${iter.index}].externalOrderId" htmlEscape="true" />
+		    <button type="button" id="cancelOrderButton_${iter.index}" onclick="cancelOrderEntry('${iter.index}')" ${(entered || rejected || cancelled) ? 'disabled="disabled"' : '' }>
+		    <spring:message code="label.button.cancel"/>
 		    </button>
 	    </td>
 	    <td style="background-color:white;">

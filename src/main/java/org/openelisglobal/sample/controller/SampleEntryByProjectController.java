@@ -57,6 +57,7 @@ import org.openelisglobal.organization.valueholder.OrganizationType;
 import org.openelisglobal.patient.saving.ISampleEntry;
 import org.openelisglobal.patient.saving.ISampleEntryAfterPatientEntry;
 import org.openelisglobal.patient.saving.ISampleSecondEntry;
+import org.openelisglobal.patient.service.PatientService;
 import org.openelisglobal.patient.valueholder.ObservationData;
 import org.openelisglobal.sample.form.ProjectData;
 import org.openelisglobal.sample.form.SampleEntryByProjectForm;
@@ -98,6 +99,8 @@ public class SampleEntryByProjectController extends BaseSampleEntryController {
 	private OrganizationTypeService organizationTypeService;
 	@Autowired
 	private DictionaryService dictionaryService;
+	@Autowired
+	private PatientService patientService;
 
 	@Autowired
 	private FhirConfig fhirConfig;
@@ -186,7 +189,6 @@ public class SampleEntryByProjectController extends BaseSampleEntryController {
 				if (eOrder != null) {
 					form.setElectronicOrder(eOrder);
 					IGenericClient localFhirClient = fhirUtil.getLocalFhirClient();
-					IGenericClient remoteFhirClient = fhirUtil.getFhirClient(defaultRemoteServer);
 					for (String remotePath : fhirConfig.getRemoteStorePaths()) {
 						Bundle srBundle = (Bundle) localFhirClient.search().forResource(ServiceRequest.class)
 								.where(ServiceRequest.RES_ID.exactly().code(externalOrderNumber))
@@ -226,7 +228,7 @@ public class SampleEntryByProjectController extends BaseSampleEntryController {
 							.resource(Patient.class)//
 							.withId(serviceRequest.getSubject().getReferenceElement().getIdPart())//
 							.execute();
-					encounter = remoteFhirClient.read().resource(Encounter.class)
+					encounter = localFhirClient.read().resource(Encounter.class)
 							.withId(serviceRequest.getEncounter().getReferenceElement().getIdPart()).execute();
 					if (ObjectUtils.isEmpty(encounter)) {
 						LogEvent.logDebug(this.getClass().getName(), "processRequest", "Not found matching Ecounter "
@@ -744,7 +746,7 @@ public class SampleEntryByProjectController extends BaseSampleEntryController {
 				if (eOrders.size() > 0) {
 					ElectronicOrder eOrder = eOrders.get(eOrders.size() - 1);
 					eOrder.setStatusId(
-							SpringContext.getBean(IStatusService.class).getStatusID(ExternalOrderStatus.Realized));
+							SpringContext.getBean(IStatusService.class).getStatusID(ExternalOrderStatus.InProgress));
 					electronicOrderService.update(eOrder);
 					form.setElectronicOrder(eOrder);
 				}
@@ -840,5 +842,23 @@ public class SampleEntryByProjectController extends BaseSampleEntryController {
 	@Override
 	protected String getPageSubtitleKey() {
 		return null;
+	}
+	
+	private ElectronicOrder getEncounterByPatientCodeAndCollectionDate(String patientCode, Date  collectionDate) {
+		ElectronicOrder matchingOrder = null;
+		
+		//get Patient
+		org.openelisglobal.patient.valueholder.Patient currentPatient = patientService.getByExternalId(patientCode);
+		
+		//get ElectronicOrders
+		electronicOrderService.getElectronicOrdersByExternalId(patientCode);
+		
+		//get ServiceRequest
+		
+		
+		//get Encounter
+		
+		
+		return matchingOrder;
 	}
 }

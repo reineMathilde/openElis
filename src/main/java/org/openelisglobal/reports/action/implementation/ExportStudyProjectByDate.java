@@ -181,16 +181,16 @@ public class ExportStudyProjectByDate extends CSVSampleExportReport implements I
             }
 
             consolidatedLine.deleteCharAt(consolidatedLine.lastIndexOf(","));
-            buffer.write(consolidatedLine.toString().getBytes("windows-1252"));
+            buffer.write(consolidatedLine.toString().getBytes("utf-8"));
         }
     }
 
     private CSVColumnBuilder getColumnBuilder(String projectId) {
         String projectTag = CIColumnBuilder.translateProjectId(projectId);
         if (projectTag.equals("ARVB")) {
-            return new ARVInitialColumnBuilder(dateRange, projectStr);
+            return new ARVInitialColumnBuilder(dateRange, projectStr, dateType);
         } else if (projectTag.equals("ARVS")) {
-            return new ARVFollowupColumnBuilder(dateRange, projectStr);
+            return new ARVFollowupColumnBuilder(dateRange, projectStr,dateType);
         } else if (projectTag.equalsIgnoreCase("DBS")) {
             return new StudyEIDColumnBuilder(dateRange, projectStr, dateType);
         } else if (projectTag.equalsIgnoreCase("VLS")) {

@@ -29,5 +29,6 @@
 	<include relativeToChangelogFile="true" file="rename_test_for_csv_export.xml"/>
 	<include relativeToChangelogFile="true" file="add_electronic_rejection.xml"/>
 	<include relativeToChangelogFile="true" file="update_document.xml"/>
+	<include relativeToChangelogFile="true" file="add_in_progress_status_eorder.xml"/>
 
 </databaseChangeLog>

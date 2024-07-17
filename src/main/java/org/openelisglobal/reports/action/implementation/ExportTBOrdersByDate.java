@@ -145,7 +145,7 @@ public class ExportTBOrdersByDate extends CSVRoutineSampleExportReport
             }
 
             consolidatedLine.deleteCharAt(consolidatedLine.lastIndexOf(","));
-            buffer.write(consolidatedLine.toString().getBytes("windows-1252"));
+            buffer.write(consolidatedLine.toString().getBytes("utf-8"));
         }
     }
 

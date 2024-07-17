@@ -169,46 +169,51 @@ public class ElectronicOrderServiceImpl extends BaseObjectServiceImpl<Electronic
 	@Override
 	@Transactional(readOnly = true)
 	public List<ElectronicOrder> searchForStudyElectronicOrders(ElectronicOrderViewForm form) {
-        switch (form.getSearchType()) {
-        case IDENTIFIER:
-            IGenericClient fhirClient = fhirUtil.getFhirClient(fhirConfig.getLocalFhirStorePath());
-            Bundle searchBundle = fhirClient.search().forResource(ServiceRequest.class)
-                    .where(ServiceRequest.IDENTIFIER.exactly().code(form.getSearchValue())).returnBundle(Bundle.class)
-                    .execute();
+		switch (form.getSearchType()) {
+		case IDENTIFIER:
+			IGenericClient fhirClient = fhirUtil.getFhirClient(fhirConfig.getLocalFhirStorePath());
+			Bundle searchBundle = fhirClient.search().forResource(ServiceRequest.class)
+					.where(ServiceRequest.IDENTIFIER.exactly().code(form.getSearchValue())).returnBundle(Bundle.class)
+					.execute();
 
-            List<String> identifierValues = new ArrayList<>(searchBundle.getEntry().size() + 1);
-            identifierValues.add(form.getSearchValue());
-            for (BundleEntryComponent bundleEntry : searchBundle.getEntry()) {
-                if (bundleEntry.hasResource()
-                        && ResourceType.ServiceRequest.equals(bundleEntry.getResource().getResourceType())) {
-                    identifierValues.add(bundleEntry.getResource().getIdElement().getIdPart());
-                }
-            }
-            String nameValue = form.getSearchValue();
+			List<String> identifierValues = new ArrayList<>(searchBundle.getEntry().size() + 1);
+			identifierValues.add(form.getSearchValue());
+			for (BundleEntryComponent bundleEntry : searchBundle.getEntry()) {
+				if (bundleEntry.hasResource()
+						&& ResourceType.ServiceRequest.equals(bundleEntry.getResource().getResourceType())) {
+					identifierValues.add(bundleEntry.getResource().getIdElement().getIdPart());
+				}
+			}
+			String nameValue = form.getSearchValue();
 
-            List<ElectronicOrder> eOrders = baseObjectDAO.getAllElectronicOrdersMatchingAnyValue(identifierValues,
-                    nameValue, SortOrder.LAST_UPDATED_ASC);
+			List<ElectronicOrder> eOrders = baseObjectDAO.getAllElectronicOrdersMatchingAnyValue(identifierValues,
+					nameValue, SortOrder.LAST_UPDATED_ASC);
 
-            return eOrders;
-        case DATE_STATUS:
-            String startDate = form.getStartDate();
-            String endDate = form.getEndDate();
-            if (GenericValidator.isBlankOrNull(startDate) && !GenericValidator.isBlankOrNull(endDate)) {
-                startDate = endDate;
-            }
-            if (GenericValidator.isBlankOrNull(endDate) && !GenericValidator.isBlankOrNull(startDate)) {
-                endDate = startDate;
-            }
-            java.sql.Timestamp startTimestamp = GenericValidator.isBlankOrNull(startDate) ? null
-                    : DateUtil.convertStringDateStringTimeToTimestamp(startDate, "00:00:00.0");
-            java.sql.Timestamp endTimestamp = GenericValidator.isBlankOrNull(endDate) ? null
-                    : DateUtil.convertStringDateStringTimeToTimestamp(endDate, "23:59:59");
-            return getAllElectronicOrdersByTimestampAndStatus(startTimestamp, endTimestamp, form.getStatusId(),
-                    SortOrder.STATUS_ID);
-        default:
-            return null;
-        }
+			return eOrders;
+		case DATE_STATUS:
+			String startDate = form.getStartDate();
+			String endDate = form.getEndDate();
+			if (GenericValidator.isBlankOrNull(startDate) && !GenericValidator.isBlankOrNull(endDate)) {
+				startDate = endDate;
+			}
+			if (GenericValidator.isBlankOrNull(endDate) && !GenericValidator.isBlankOrNull(startDate)) {
+				endDate = startDate;
+			}
+			java.sql.Timestamp startTimestamp = GenericValidator.isBlankOrNull(startDate) ? null
+					: DateUtil.convertStringDateStringTimeToTimestamp(startDate, "00:00:00.0");
+			java.sql.Timestamp endTimestamp = GenericValidator.isBlankOrNull(endDate) ? null
+					: DateUtil.convertStringDateStringTimeToTimestamp(endDate, "23:59:59");
+			return getAllElectronicOrdersByTimestampAndStatus(startTimestamp, endTimestamp, form.getStatusId(),
+					SortOrder.STATUS_ID);
+		default:
+			return null;
+		}
 
+	}
+
+	public String getEnteredElectronicOrderByPatient(String patientIdentifier) {
+		ElectronicOrder eOrder = getBaseObjectDAO().getLastEnteredByPatientIdentifier(patientIdentifier);
+		return ObjectUtils.isNotEmpty(eOrder) ? eOrder.getExternalId() : null;
 	}
 
 }

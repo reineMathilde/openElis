@@ -426,13 +426,13 @@ abstract public class CSVColumnBuilder {
                 }
                 switch (orderStatus) {
                 case Entered:
-                    return "E"; // entered, entree
+                    return "Entered"; // entered, entree
                 case Started:
-                    return "C"; // commenced, commence
+                    return "Started"; // commenced, commence
                 case Finished:
-                    return "F"; // Finished, Finale
+                    return "Finished"; // Finished, Finale
                 case NonConforming_depricated:
-                    return "N"; // Non-conforming, Non-conformes
+                    return "Non-conforming"; // Non-conforming, Non-conformes
                 }
 			case ANALYSIS_STATUS:
 				AnalysisStatus analysisStatus = StatusService.getInstance().getAnalysisStatusForID(value);
@@ -632,7 +632,7 @@ abstract public class CSVColumnBuilder {
         appendCrosstabPreamble(listName);
         query.append( // any Observation History items
                 "\n crosstab( " + "\n 'SELECT DISTINCT oh.sample_id as samp_id, oht.type_name, value "
-                        + "\n FROM observation_history AS oh, sample AS s, sample_item AS si, analysis AS a observation_history_type AS oht "
+                        + "\n FROM observation_history AS oh, sample AS s, sample_item AS si, analysis AS a, observation_history_type AS oht "
                         + "\n WHERE "+byDate+" >= date(''" + formatDateForDatabaseSql(lowDate) + "'') "
                         + "\n AND "+byDate+"  <= date(''" + formatDateForDatabaseSql(highDate) + "'')"
                         + "\n AND s.id = oh.sample_id AND oh.observation_history_type_id = oht.id "

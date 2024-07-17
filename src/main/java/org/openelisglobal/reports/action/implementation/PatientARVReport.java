@@ -32,6 +32,8 @@ import org.openelisglobal.common.util.DateUtil;
 import org.openelisglobal.dictionary.service.DictionaryService;
 import org.openelisglobal.dictionary.valueholder.Dictionary;
 import org.openelisglobal.internationalization.MessageUtil;
+import org.openelisglobal.observationhistory.service.ObservationHistoryService;
+import org.openelisglobal.observationhistory.service.ObservationHistoryServiceImpl.ObservationType;
 import org.openelisglobal.reports.action.implementation.reportBeans.ARVReportData;
 import org.openelisglobal.result.service.ResultService;
 import org.openelisglobal.result.valueholder.Result;
@@ -51,6 +53,7 @@ public abstract class PatientARVReport extends RetroCIPatientReport {
     private AnalysisService analysisService = SpringContext.getBean(AnalysisService.class);
     private DictionaryService dictionaryService = SpringContext.getBean(DictionaryService.class);
     private ResultService resultService = SpringContext.getBean(ResultService.class);
+    private ObservationHistoryService ohService = SpringContext.getBean(ObservationHistoryService.class);
 
     @Override
     protected void initializeReportItems() {
@@ -64,6 +67,8 @@ public abstract class PatientARVReport extends RetroCIPatientReport {
             subjectNumber = reportPatient.getExternalId();
         }
 
+        data.setVlSuckle(ohService.getMostRecentValueForPatient(ObservationType.VL_SUCKLE, reportPatient.getId()));
+        data.setVlPregnancy(ohService.getMostRecentValueForPatient(ObservationType.VL_PREGNANCY, reportPatient.getId()));
         data.setSubjectNumber(subjectNumber);
         data.setBirth_date(reportPatient.getBirthDateForDisplay());
         data.setAge(DateUtil.getCurrentAgeForDate(reportPatient.getBirthDate(), reportSample.getCollectionDate()));
@@ -111,6 +116,8 @@ public abstract class PatientARVReport extends RetroCIPatientReport {
         Boolean mayBeDuplicate = lastReport != null;
         Date maxCompleationDate = null;
         long maxCompleationTime = 0L;
+        Date maxReleasedDate = null;
+        long maxReleasedTime = 0L;
 
         for (Analysis analysis : analysisList) {
             if (analysis.getCompletedDate() != null) {
@@ -118,7 +125,12 @@ public abstract class PatientARVReport extends RetroCIPatientReport {
                     maxCompleationDate = analysis.getCompletedDate();
                     maxCompleationTime = maxCompleationDate.getTime();
                 }
-
+            }
+            if (analysis.getReleasedDate() != null) {
+                if (analysis.getReleasedDate().getTime() > maxReleasedTime) {
+                    maxReleasedDate = analysis.getReleasedDate();
+                    maxReleasedTime = maxReleasedDate.getTime();
+                }
             }
 
             if (!analysis.getStatusId()
@@ -173,6 +185,9 @@ public abstract class PatientARVReport extends RetroCIPatientReport {
 
         if (maxCompleationDate != null) {
             data.setCompleationdate(DateUtil.convertSqlDateToStringDate(maxCompleationDate));
+        }
+        if (maxReleasedDate != null) {
+            data.setReleasedate(DateUtil.convertSqlDateToStringDate(maxReleasedDate));
         }
         data.setDuplicateReport(mayBeDuplicate);
         data.setStatus(atLeastOneAnalysisNotValidated ? MessageUtil.getMessage("report.status.partial")

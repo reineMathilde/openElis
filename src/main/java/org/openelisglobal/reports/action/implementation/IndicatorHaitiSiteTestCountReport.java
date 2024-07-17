@@ -272,7 +272,7 @@ public class IndicatorHaitiSiteTestCountReport extends CSVExportReport
         }
 
         ByteArrayOutputStream buffer = new ByteArrayOutputStream(100000);
-        buffer.write(getColumnNamesLine().getBytes("windows-1252"));
+        buffer.write(getColumnNamesLine().getBytes("utf-8"));
 
         Collections.sort(reportList, new Comparator<TestSiteYearReport>() {
             @Override
@@ -288,7 +288,7 @@ public class IndicatorHaitiSiteTestCountReport extends CSVExportReport
         });
 
         for (TestSiteYearReport report : reportList) {
-            buffer.write(getReportLine(report).getBytes("windows-1252"));
+            buffer.write(getReportLine(report).getBytes("utf-8"));
         }
 
         return buffer.toByteArray();

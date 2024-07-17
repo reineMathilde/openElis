@@ -11,6 +11,8 @@ import javax.validation.Valid;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.r4.model.Bundle;
+import org.hl7.fhir.r4.model.Bundle.BundleEntryComponent;
+import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.Encounter;
@@ -21,14 +23,13 @@ import org.hl7.fhir.r4.model.Reference;
 import org.hl7.fhir.r4.model.ResourceType;
 import org.hl7.fhir.r4.model.ServiceRequest;
 import org.hl7.fhir.r4.model.Task;
-import org.hl7.fhir.r4.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r4.model.Task.ParameterComponent;
 import org.hl7.fhir.r4.model.Task.TaskStatus;
 import org.openelisglobal.common.controller.BaseController;
 import org.openelisglobal.common.log.LogEvent;
 import org.openelisglobal.common.services.DisplayListService;
-import org.openelisglobal.common.services.IStatusService;
 import org.openelisglobal.common.services.DisplayListService.ListType;
+import org.openelisglobal.common.services.IStatusService;
 import org.openelisglobal.common.services.StatusService.ExternalOrderStatus;
 import org.openelisglobal.common.util.DateUtil;
 import org.openelisglobal.dataexchange.fhir.FhirConfig;
@@ -44,6 +45,8 @@ import org.openelisglobal.organization.util.OrganizationTypeList;
 import org.openelisglobal.organization.valueholder.Organization;
 import org.openelisglobal.patient.service.PatientService;
 import org.openelisglobal.patient.valueholder.Patient;
+import org.openelisglobal.qaevent.service.QaEventService;
+import org.openelisglobal.qaevent.valueholder.QaEvent;
 import org.openelisglobal.sample.service.SampleService;
 import org.openelisglobal.sample.valueholder.Sample;
 import org.openelisglobal.spring.util.SpringContext;
@@ -88,6 +91,8 @@ public class StudyElectronicOrdersController extends BaseController {
 	private FhirConfig fhirConfig;
 	@Autowired
 	private FhirPersistanceService fhirPersistanceService;
+	@Autowired
+	private QaEventService qaEventService;
 
 	private Task task = null;
 	private ServiceRequest serviceRequest = null;
@@ -182,6 +187,19 @@ public class StudyElectronicOrdersController extends BaseController {
 					// update Task
 					task = fhirPersistanceService.getTaskBasedOnServiceRequest(externalOrderNumber).orElseThrow();
 					task.setStatus(TaskStatus.REJECTED);
+					QaEvent event = qaEventService.get(qaEventId);
+					String rejectionReasonText = getMessageForKey(
+							ObjectUtils.isNotEmpty(event) ? event.getNameKey() : "");
+					rejectionReasonText += " " + (ObjectUtils.isNotEmpty(qaNote) ? "/ "+qaNote : "");
+					// add task rejection reason
+					CodeableConcept rejectionReasonCodeableConcept = new CodeableConcept();
+					Coding rejectionCoding = new Coding();
+					rejectionCoding.setSystem("http://terminology.hl7.org/CodeSystem/task-rejection-reason");
+					rejectionCoding.setCode("invalid-sample");
+					rejectionCoding.setDisplay(rejectionReasonText);
+					rejectionReasonCodeableConcept.addCoding(rejectionCoding);
+					rejectionReasonCodeableConcept.setText(rejectionReasonText);
+					task.setStatusReason(rejectionReasonCodeableConcept);
 					fhirPersistanceService.updateFhirResourceInFhirStore(task);
 				}
 			}
@@ -190,6 +208,65 @@ public class StudyElectronicOrdersController extends BaseController {
 		}
 		return findForward(FWD_SUCCESS_INSERT, form);
 
+	}
+
+	@RequestMapping(value = "/cancelElectronicOrders", method = RequestMethod.GET)
+	public ModelAndView cancelElectronicOrders(HttpServletRequest request,
+			@ModelAttribute("form") @Valid ElectronicOrderViewForm form, BindingResult result) {
+		try {
+			String externalOrderNumber = request.getParameter("externalOrderId");
+			String searchType = request.getParameter("searchType");
+			String startDate = request.getParameter("startDate");
+			String endDate = request.getParameter("endDate");
+			String statusId = request.getParameter("statusId");
+			searchParameters = "?searchType=" + searchType + "&startDate=" + startDate + "&endDate=" + endDate
+					+ "&statusId=" + statusId;
+
+			if (StringUtils.isNotBlank(externalOrderNumber)) {
+				ElectronicOrder eOrder = null;
+				List<ElectronicOrder> eOrders = electronicOrderService
+						.getElectronicOrdersByExternalId(externalOrderNumber);
+				if (eOrders.size() > 0)
+					eOrder = eOrders.get(eOrders.size() - 1);
+				if (eOrder != null) {
+
+					IGenericClient localFhirClient = fhirUtil.getLocalFhirClient();
+					// IGenericClient remoteFhirClient =
+					// fhirUtil.getFhirClient(defaultRemoteServer);
+					for (String remotePath : fhirConfig.getRemoteStorePaths()) {
+						Bundle srBundle = (Bundle) localFhirClient.search().forResource(ServiceRequest.class)
+								.where(ServiceRequest.RES_ID.exactly().code(externalOrderNumber))
+								.include(ServiceRequest.INCLUDE_SPECIMEN).execute();
+						for (BundleEntryComponent bundleComponent : srBundle.getEntry()) {
+							if (bundleComponent.hasResource() && ResourceType.ServiceRequest
+									.equals(bundleComponent.getResource().getResourceType())) {
+								serviceRequest = (ServiceRequest) bundleComponent.getResource();
+							}
+						}
+						srBundle = (Bundle) localFhirClient
+								.search().forResource(ServiceRequest.class).where(ServiceRequest.IDENTIFIER.exactly()
+										.systemAndIdentifier(remotePath, externalOrderNumber))
+								.include(ServiceRequest.INCLUDE_SPECIMEN).execute();
+						for (BundleEntryComponent bundleComponent : srBundle.getEntry()) {
+							if (bundleComponent.hasResource() && ResourceType.ServiceRequest
+									.equals(bundleComponent.getResource().getResourceType())) {
+								serviceRequest = (ServiceRequest) bundleComponent.getResource();
+							}
+						}
+					}
+					eOrder.setStatusId(
+							SpringContext.getBean(IStatusService.class).getStatusID(ExternalOrderStatus.Cancelled));
+					electronicOrderService.update(eOrder);
+					// update Task
+					task = fhirPersistanceService.getTaskBasedOnServiceRequest(externalOrderNumber).orElseThrow();
+					task.setStatus(TaskStatus.CANCELLED);
+					fhirPersistanceService.updateFhirResourceInFhirStore(task);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return findForward(FWD_SUCCESS_INSERT, form);
 	}
 
 	private List<ElectronicOrderDisplayItem> convertToDisplayItem(List<ElectronicOrder> electronicOrders,
@@ -272,7 +349,7 @@ public class StudyElectronicOrdersController extends BaseController {
 				}
 			}
 
-			Encounter encounter = fhirUtil.getFhirClient(defaultRemoteServer).read().resource(Encounter.class)
+			Encounter encounter = fhirClient.read().resource(Encounter.class)
 					.withId(serviceRequest.getEncounter().getReferenceElement().getIdPart()).execute();
 			if (ObjectUtils.isNotEmpty(encounter)) { // get Collection Date
 				Period period = encounter.getPeriod();
@@ -336,4 +413,5 @@ public class StudyElectronicOrdersController extends BaseController {
 	protected String getPageSubtitleKey() {
 		return "study.eorder.browse.title";
 	}
+
 }

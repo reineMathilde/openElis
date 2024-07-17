@@ -24,8 +24,8 @@ function EidProjectChecker() {
         this.refreshBase();         
         this.displayTypeOfClinicOther();
         var s = $("eid.subjectNumber").value;
-        $("eid.infantID").value   = s.slice(-4);     // last 4 chars
-        $("eid.codeSiteID").value = s.slice(3,-4); // and the numbers before that, without DBS
+        $("eid.infantID").value   = s.slice(-5);     // last 5 chars
+        $("eid.codeSiteID").value = s.slice(3,-5); // and the numbers before that, without DBS
         
     }
 
@@ -150,12 +150,12 @@ eid = new EidProjectChecker();
         <td><spring:message code="sample.entry.project.EID.infantNumber"/></td>
         <td>
             <div class="blank">DBS</div>
-            <INPUT type="text" name="eid.codeSiteId" id="eid.codeSiteID" size="4" class="text"
+            <INPUT type="text" name="eid.codeSiteId" id="eid.codeSiteID" size="5" class="text"
                 onchange="handleDBSSubjectId(); makeDirty();"
-                maxlength="4" />
-            <INPUT type="text" name="eid.infantID" id="eid.infantID" size="4" class="text"
+                maxlength="5" />
+            <INPUT type="text" name="eid.infantID" id="eid.infantID" size="5" class="text"
                 onchange="handleDBSSubjectId(); makeDirty();"
-                maxlength="4" />
+                maxlength="5" />
             <form:input path="subjectNumber"
                     cssClass="text" style="display:none;"
                     id="eid.subjectNumber"
@@ -170,8 +170,7 @@ eid = new EidProjectChecker();
             <form:input path="siteSubjectNumber"
                 id="eid.siteSubjectNumber"
                 cssClass="text"
-                onkeyup="addPatientCodeSlashes(this, event);"
-                onchange="eid.checkSiteSubjectNumber(true);validateSiteSubjectNumber(this)"  maxlength="18"/>
+                onchange="eid.checkSiteSubjectNumber(true);"  />
             <div id="eid.siteSubjectNumberMessage" class="blank"></div>
         </td>
     </tr>

@@ -22,7 +22,6 @@ import static org.openelisglobal.reports.action.implementation.reportBeans.CSVCo
 import static org.openelisglobal.reports.action.implementation.reportBeans.CSVColumnBuilder.Strategy.NONE;
 import static org.openelisglobal.reports.action.implementation.reportBeans.CSVColumnBuilder.Strategy.TEST_RESULT;
 
-import org.jfree.ui.DateCellRenderer;
 import org.openelisglobal.reports.action.implementation.Report.DateRange;
 import org.openelisglobal.reports.form.ReportForm.DateType;
 import org.openelisglobal.spring.util.SpringContext;
@@ -70,6 +69,7 @@ public class StudyEIDColumnBuilder extends CIStudyColumnBuilder {
         add("reasonForSecondPCRTest", "reasonForSecondPCRTest");
         add("eidInfantPTME", "eidInfantPTME");
         add("eidTypeOfClinic", "eidTypeOfClinic", new EIDTypeOfClinicStrategy());
+        //add("eidTypeOfClinicOther", "eidTypeOfClinicOther");
         add("eidInfantSymptomatic", "eidInfantSymptomatic");
         add("eidMothersHIVStatus", "eidMothersHIVStatus");
         add("eidMothersARV", "eidMothersARV");

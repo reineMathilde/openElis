@@ -22,6 +22,8 @@ import java.sql.Date;
 import org.openelisglobal.reports.action.implementation.Report.DateRange;
 import org.openelisglobal.reports.form.ReportForm.DateType;
 
+import liquibase.pro.packaged.da;
+
 /**
  * @author pahill (pahill@uw.edu)
  * @since May 18, 2011
@@ -36,6 +38,11 @@ public abstract class ARVColumnBuilder extends CIColumnBuilder {
 	public ARVColumnBuilder(DateRange dateRange, String projectStr) {
 		super(dateRange, projectStr);
 	}
+	
+	public ARVColumnBuilder(DateRange dateRange, String projectStr, DateType dateType) {
+		super(dateRange, projectStr);
+		this.dateType = dateType;
+	}
 
 	/**
 	 * This is the order we want them in the CSV file.
@@ -49,7 +56,6 @@ public abstract class ARVColumnBuilder extends CIColumnBuilder {
 	 */
 	@Override
 	public void makeSQL() {
-
 		// Switch date column according to selected DateType: PK
 		String dateColumn = "s.entered_date ";
 		switch (dateType) {
@@ -62,9 +68,9 @@ public abstract class ARVColumnBuilder extends CIColumnBuilder {
 		case PRINT_DATE:
 			dateColumn = "dt.report_generation_time ";
 		default:
+			dateColumn = "s.entered_date ";
 			break;
 		}
-
 		query = new StringBuilder();
 		Date lowDate = dateRange.getLowDate();
 		Date highDate = dateRange.getHighDate();

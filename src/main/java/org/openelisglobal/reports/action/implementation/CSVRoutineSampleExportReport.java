@@ -70,7 +70,7 @@ public abstract class CSVRoutineSampleExportReport extends CSVRoutineExportRepor
         }
 
         ByteArrayOutputStream buffer = new ByteArrayOutputStream(100000);
-        buffer.write(csvRoutineColumnBuilder.getColumnNamesLine().getBytes("windows-1252"));
+        buffer.write(csvRoutineColumnBuilder.getColumnNamesLine().getBytes("utf-8"));
 
         writeResultsToBuffer(buffer);
         csvRoutineColumnBuilder.closeResultSet();
@@ -81,7 +81,7 @@ public abstract class CSVRoutineSampleExportReport extends CSVRoutineExportRepor
     protected void writeResultsToBuffer(ByteArrayOutputStream buffer)
             throws IOException, UnsupportedEncodingException, SQLException, ParseException {
         while (csvRoutineColumnBuilder.next()) {
-            buffer.write(csvRoutineColumnBuilder.nextLine().getBytes("windows-1252"));
+            buffer.write(csvRoutineColumnBuilder.nextLine().getBytes("utf-8"));
         }
     }
 

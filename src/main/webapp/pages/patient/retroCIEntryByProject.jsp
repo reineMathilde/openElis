@@ -118,10 +118,10 @@ function Studies() {
 	this.validators["FollowUpARV_Id"].setRequiredFields( new Array("subjectOrSiteSubject", "farv.receivedDateForDisplay", "farv.interviewDate", "farv.centerCode", "farv.labNo", "farv.gender", "farv.dateOfBirth") );
 
 	this.validators["EID_Id"] = new FieldValidator();
-	this.validators["EID_Id"].setRequiredFields( new Array("eid.receivedDateForDisplay", "eid.interviewDate", "eid.centerCode", "eid.centerName", "subjectOrSiteSubject", "eid.labNo", "eid.dateOfBirth", "eid.gender" ) );
+	this.validators["EID_Id"].setRequiredFields( new Array("eid.receivedDateForDisplay", "eid.interviewDate", "eid.centerCode", "eid.centerName", "eid.labNo", "eid.dateOfBirth", "eid.gender" ) );
 	
 	this.validators["VL_Id"] = new FieldValidator();
-	this.validators["VL_Id"].setRequiredFields( new Array("vl.receivedDateForDisplay", "vl.interviewDate", "subjectOrSiteSubject", "vl.labNo", "vl.dateOfBirth", "vl.gender" ) );
+	this.validators["VL_Id"].setRequiredFields( new Array("vl.centerCode", "vl.receivedDateForDisplay", "vl.interviewDate", "subjectOrSiteSubject", "vl.labNo", "vl.dateOfBirth", "vl.gender","vl.hivStatus") );
 	
 	this.validators["RTN_Id"] = new FieldValidator();
 	this.validators["RTN_Id"].setRequiredFields( new Array("rtn.labNo", "rtn.receivedDateForDisplay", "rtn.interviewDate", "rtn.gender", "rtn.dateOfBirth", "rtn.nameOfDoctor", "rtn.service", "rtn.hospital") );

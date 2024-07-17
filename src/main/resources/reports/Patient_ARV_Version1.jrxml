@@ -4,10 +4,10 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.3636363636363635"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="1261"/>
+	<property name="ireport.y" value="1411"/>
 	<import value="net.sf.jasperreports.engine.*"/>
-	<import value="net.sf.jasperreports.engine.data.*"/>
 	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["../reports/"]]></defaultValueExpression>
 	</parameter>
@@ -69,6 +69,9 @@
 	<field name="virologyVlQaEvent" class="java.lang.String"/>
 	<field name="receptionQaEvent" class="java.lang.String"/>
 	<field name="compleationdate" class="java.lang.String"/>
+	<field name="releasedate" class="java.lang.String"/>
+	<field name="vlSuckle" class="java.lang.String"/>
+	<field name="vlPregnancy" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -86,11 +89,11 @@
 				<subreportParameter name="birth_date">
 					<subreportParameterExpression><![CDATA[$F{birth_date}]]></subreportParameterExpression>
 				</subreportParameter>
-				<subreportParameter name="compleationdate">
-					<subreportParameterExpression><![CDATA[$F{compleationdate}]]></subreportParameterExpression>
-				</subreportParameter>
 				<subreportParameter name="orgname">
 					<subreportParameterExpression><![CDATA[$F{orgname}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="compleationdate">
+					<subreportParameterExpression><![CDATA[$F{compleationdate}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportParameter name="age">
 					<subreportParameterExpression><![CDATA[$F{age}]]></subreportParameterExpression>
@@ -98,14 +101,23 @@
 				<subreportParameter name="labNo">
 					<subreportParameterExpression><![CDATA[$F{labNo}]]></subreportParameterExpression>
 				</subreportParameter>
+				<subreportParameter name="vlPregnancy">
+					<subreportParameterExpression><![CDATA[$F{vlPregnancy}]]></subreportParameterExpression>
+				</subreportParameter>
 				<subreportParameter name="gender">
 					<subreportParameterExpression><![CDATA[$F{gender}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="releasedate">
+					<subreportParameterExpression><![CDATA[$F{releasedate}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportParameter name="collectiondate">
 					<subreportParameterExpression><![CDATA[$F{collectiondate}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportParameter name="receptiondate">
 					<subreportParameterExpression><![CDATA[$F{receptiondate}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="vlSuckle">
+					<subreportParameterExpression><![CDATA[$F{vlSuckle}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportParameter name="doctor">
 					<subreportParameterExpression><![CDATA[$F{doctor}]]></subreportParameterExpression>
@@ -321,7 +333,7 @@
 				<text><![CDATA[Biochimie:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-14" mode="Opaque" x="1" y="242" width="78" height="18" uuid="689571f3-235c-40df-b139-e0b0fd458e7a">
+				<reportElement key="staticText-14" mode="Opaque" x="1" y="242" width="100" height="18" uuid="689571f3-235c-40df-b139-e0b0fd458e7a">
 					<printWhenExpression><![CDATA[$F{creatininemie} != null]]></printWhenExpression>
 				</reportElement>
 				<text><![CDATA[Créatinine(mg/l)]]></text>
@@ -357,7 +369,7 @@
 				<textFieldExpression><![CDATA[$F{sgot} == null ? "X" : $F{sgot}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement key="staticText-21" mode="Opaque" x="297" y="242" width="78" height="18" uuid="e0c80fab-e252-48b2-b4d8-d998ded1b13f">
+				<reportElement key="staticText-21" mode="Opaque" x="297" y="242" width="93" height="18" uuid="e0c80fab-e252-48b2-b4d8-d998ded1b13f">
 					<printWhenExpression><![CDATA[$F{glyc} != null]]></printWhenExpression>
 				</reportElement>
 				<text><![CDATA[Glycémie(g/l)]]></text>
@@ -446,7 +458,7 @@
 				<text><![CDATA[Sérologie VIH :]]></text>
 			</staticText>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-8" mode="Transparent" x="6" y="309" width="62" height="18" isRemoveLineWhenBlank="true" forecolor="#000000" uuid="78460679-80dc-4628-bfe7-922df0fe8421">
+				<reportElement key="textField-8" mode="Transparent" x="6" y="309" width="87" height="18" isRemoveLineWhenBlank="true" forecolor="#000000" uuid="78460679-80dc-4628-bfe7-922df0fe8421">
 					<printWhenExpression><![CDATA[$F{vih} != null && !$F{vih}.contains("En cours")]]></printWhenExpression>
 				</reportElement>
 				<textFieldExpression><![CDATA[$F{vih} == null ? "X" : $F{vih}]]></textFieldExpression>
@@ -1218,49 +1230,49 @@
 				<text><![CDATA[Valeurs de Référence]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="163" y="17" width="309" height="12" uuid="3e6c9e9d-9217-4cd9-b905-b626f139ff55"/>
+				<reportElement x="174" y="17" width="309" height="12" uuid="3e6c9e9d-9217-4cd9-b905-b626f139ff55"/>
 				<textElement>
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Hématologie (Hémogramme : NFS)]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="171" y="29" width="343" height="11" uuid="6ac2b090-6ac5-4788-ae90-31831dd8760a"/>
+				<reportElement x="182" y="29" width="343" height="11" uuid="6ac2b090-6ac5-4788-ae90-31831dd8760a"/>
 				<textElement>
 					<font size="8" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Homme/Femme]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="168" y="124" width="30" height="16" uuid="76d000e3-96c9-43f5-94e2-2b863e49a386"/>
+				<reportElement x="179" y="124" width="30" height="16" uuid="76d000e3-96c9-43f5-94e2-2b863e49a386"/>
 				<textElement>
 					<font size="8" isBold="false"/>
 				</textElement>
 				<text><![CDATA[Enfant:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="198" y="124" width="220" height="16" uuid="3a34ac92-f824-4dcc-bd65-1faffb954670"/>
+				<reportElement x="209" y="124" width="220" height="16" uuid="3a34ac92-f824-4dcc-bd65-1faffb954670"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Se référer aux guides des valeurs de référence transmises]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="163" y="40" width="178" height="84" uuid="108c8e54-1c15-478f-a660-f2861a345053"/>
+				<reportElement x="174" y="40" width="178" height="84" uuid="108c8e54-1c15-478f-a660-f2861a345053"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[GB = 3 – 15 .10^3/µl                                         
+				<text><![CDATA[GB = 3 – 15 .10^3/µl
 LY =  20.0 – 50.0 (%)       1.0 – 3.70 (10^3/µl)
 Ne = 37.0 – 72.0 (%)       1.5 – 7.0 (10^3/µl)
 Mo = 0.0 – 14.0 (%)        0.0 – 0.7 (10^3/µl)
-Eo = 0.0 – 6.0 (%)            0.0 – 0.4 (10^3/µl) 
-Bo = 0.0 – 0.1 (%)            0.0 – 0.1 (10^3/µl)
-PLT = 50 - 400 (10^3/µl)
+Eo = 0.0 – 6.0 (%)            0.0 – 0.4 (10^3/µl)
+Ba = 0.0 – 1.0 (%)            0.0 – 1.0 (10^3/µl)
+
 ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="372" y="40" width="180" height="100" uuid="3597a55c-99cb-44fd-ad4e-f1add995b2d9"/>
+				<reportElement x="383" y="40" width="161" height="100" uuid="3597a55c-99cb-44fd-ad4e-f1add995b2d9"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
@@ -1270,30 +1282,25 @@ HCT = 26.0-50.0 (%)
 VGM = 86.0 -110.0 (fL)
 TCMH =26.0 – 38.0 (pg)
 CCMH = 31.0 – 37.0 (g/dL)
-]]></text>
+PLT = 50 - 400 (10^3/µl)]]></text>
 			</staticText>
 			<rectangle>
-				<reportElement x="1" y="17" width="160" height="58" uuid="41ae3912-ab03-4aab-9fae-58f82d0b4363"/>
+				<reportElement x="1" y="17" width="170" height="64" uuid="41ae3912-ab03-4aab-9fae-58f82d0b4363"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="3" y="17" width="160" height="53" uuid="4d34e882-a52a-46c3-b381-135e1b824269"/>
+				<reportElement x="3" y="17" width="167" height="64" isPrintWhenDetailOverflows="true" uuid="4d34e882-a52a-46c3-b381-135e1b824269"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Biochimie
-Créatinine : 7.0-16.0 mg/l(H) / 7.0-15.0mg/l(F
-ALTL: 6-26 UI/L (H) / 4-24 UI/L  (F)
-ASTL: 7-32 UI/L (H) / 5-30 UI/L (F)
-Glycémie : 0.70-1.10 g/l (H) / 0.75-1.10 g/l (F)]]></text>
+Créatinine: 7.0-16.0 mg/l(H) / 7.0-15.0mg/l(F)
+Glycémie: 0.70-1.10 g/l (H) / 0.75-1.10 g/l (F)]]></text>
 			</staticText>
 			<rectangle>
-				<reportElement x="1" y="70" width="160" height="40" uuid="16931805-d97b-4047-a5bb-018f9e7d12eb"/>
-			</rectangle>
-			<rectangle>
-				<reportElement x="1" y="106" width="160" height="35" uuid="7a1a73c8-bdf6-4681-8973-ec7c64f56943"/>
+				<reportElement x="1" y="81" width="170" height="59" uuid="16931805-d97b-4047-a5bb-018f9e7d12eb"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="4" y="74" width="160" height="32" uuid="4d08f7ff-eb44-450e-85dc-ce36b22e7c49"/>
+				<reportElement x="3" y="81" width="169" height="59" uuid="4d08f7ff-eb44-450e-85dc-ce36b22e7c49"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
@@ -1307,15 +1314,6 @@ CD4# : 404-1612 cellules/µl]]></text>
 					<pen lineWidth="0.75" lineStyle="Solid"/>
 				</graphicElement>
 			</line>
-			<staticText>
-				<reportElement x="4" y="108" width="160" height="32" uuid="47fe31a3-7646-4b13-a066-7d45c7eeab1b"/>
-				<textElement>
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[Charge Virale : <LL : Charge virale
-indétectable ou inférieure à la limite de
-détection (20 copies/ml) ]]></text>
-			</staticText>
 		</band>
 	</pageFooter>
 	<summary>

@@ -117,7 +117,8 @@ var requestType = '<%=Encode.forJavaScript(requestType)%>';
 		this.validators["EID_Id"] = new FieldValidator();
 		this.validators["EID_Id"].setRequiredFields(new Array(
 				"eid.receivedDateForDisplay", "eid.interviewDate",
-				"eid.gender", "eid.dateOfBirth"));
+				"eid.gender", "eid.dateOfBirth","eid.centerCode", "eid.centerName",
+				"eid.labNo"));
 
 		this.validators["Indeterminate_Id"] = new FieldValidator();
 		this.validators["Indeterminate_Id"].setRequiredFields(new Array(
@@ -132,8 +133,8 @@ var requestType = '<%=Encode.forJavaScript(requestType)%>';
 
 		this.validators["VL_Id"] = new FieldValidator();
 		this.validators["VL_Id"].setRequiredFields(new Array(
-				"vl.receivedDateForDisplay", "vl.interviewDate", "vl.gender",
-				"vl.dateOfBirth"));
+				"vl.centerCode","vl.receivedDateForDisplay", "vl.interviewDate", "vl.gender",
+				"vl.dateOfBirth", "subjectOrSiteSubject", "vl.labNo","vl.hivStatus"));
 
 		this.validators["Recency_Id"] = new FieldValidator();
 		this.validators["Recency_Id"].setRequiredFields(new Array(
@@ -1146,11 +1147,11 @@ var requestType = '<%=Encode.forJavaScript(requestType)%>';
 						code="sample.entry.project.EID.infantNumber" /></td>
 				<td>
 					<div class="blank">DBS</div> <INPUT type="text"
-					name="eid.codeSiteId" id="eid.codeSiteID" size="4" class="text"
-					onchange="handleDBSSubjectId(); makeDirty();" maxlength="4" /> <INPUT
-					type="text" name="eid.infantID" id="eid.infantID" size="4"
+					name="eid.codeSiteId" id="eid.codeSiteID" size="5" class="text"
+					onchange="handleDBSSubjectId(); makeDirty();" maxlength="5" /> <INPUT
+					type="text" name="eid.infantID" id="eid.infantID" size="5"
 					class="text" onchange="handleDBSSubjectId(); makeDirty();"
-					maxlength="4" /> <form:input id="eid.subjectNumber"
+					maxlength="5" /> <form:input id="eid.subjectNumber"
 						path="subjectNumber" style="display:none;"
 						onchange="checkRequiredField(this); makeDirty();" />
 					<div id="eid.subjectNumberMessage" class="blank"></div>
@@ -1162,8 +1163,7 @@ var requestType = '<%=Encode.forJavaScript(requestType)%>';
 						code="sample.entry.project.EID.siteInfantNumber" /></td>
 				<td><form:input path="siteSubjectNumber"
 						id="eid.siteSubjectNumber"
-						onkeyup="addPatientCodeSlashes(this, event);"
-						onchange="eid.checkSiteSubjectNumber(true);validateSiteSubjectNumber(this)" cssClass="text"  maxlength="18"/>
+						onchange="eid.checkSiteSubjectNumber(true);" cssClass="text"/>
 					<div id="eid.siteSubjectNumberMessage" class="blank"></div></td>
 			</tr>
 
@@ -2348,7 +2348,7 @@ var requestType = '<%=Encode.forJavaScript(requestType)%>';
 				<td><spring:message code="sample.entry.project.subjectNumber" /></td>
 				<td><form:input path="subjectNumber" cssClass="text"
 						id="vl.subjectNumber" maxlength="7"
-						onchange="vl.checkSubjectNumber(true)" />
+						onchange="vl.checkSubjectNumber(true);searchForEOrder(this);" />
 					<div id="vl.subjectIDMessage" class="blank"></div></td>
 			</tr>
 			<tr>
@@ -2357,7 +2357,7 @@ var requestType = '<%=Encode.forJavaScript(requestType)%>';
 				<td><form:input path="siteSubjectNumber"
 						id="vl.siteSubjectNumber" cssClass="text"
 						onkeyup="addPatientCodeSlashes(this, event);"
-						onchange="vl.checkSiteSubjectNumber(true);validateSiteSubjectNumber(this)" maxlength="18"/>
+						onchange="vl.checkSiteSubjectNumber(true);validateSiteSubjectNumber(this);searchForEOrder(this);" maxlength="18"/>
 						<div id="vl.siteSubjectNumberMessage" class="blank"></div></td>
 			</tr>
 			<tr>
@@ -2454,7 +2454,6 @@ var requestType = '<%=Encode.forJavaScript(requestType)%>';
 			<tr>
 				<td colspan="5"><hr /></td>
 			</tr>
-			<%-- _________________________________________________ --%>
 
 			<tr>
 				<td></td>
@@ -2648,7 +2647,7 @@ var requestType = '<%=Encode.forJavaScript(requestType)%>';
 				<td><spring:message code="sample.project.priorVLLab" /></td>
 				<td><form:input path="observations.priorVLLab" cssClass="text"
 						onchange="makeDirty();compareAllObservationHistoryFields(true);"
-						id="vl.priorVLLab" maxlength="10" />
+						id="vl.priorVLLab" maxlength="100" />
 					<div id="priorVLLabMessage" class="blank" /></td>
 			</tr>
 
@@ -3201,7 +3200,6 @@ var requestType = '<%=Encode.forJavaScript(requestType)%>';
 	}
 
 	ArvFollowupProjectChecker.prototype = new BaseProjectChecker();
-	/// the object which knows about Followup ARV questions and which fields to show etc.
 	farv = new ArvFollowupProjectChecker();
 
 	function RtnProjectChecker() {
@@ -3297,7 +3295,7 @@ var requestType = '<%=Encode.forJavaScript(requestType)%>';
 
 		this.idPre = "vl.";
 		var specialKeys = new Array();
-		specialKeys.push(8); //Backspace
+		specialKeys.push(8);
 
 		this.checkDate = function(field, blanksAllowed) {
 			makeDirty();
@@ -3371,8 +3369,6 @@ var requestType = '<%=Encode.forJavaScript(requestType)%>';
 		this.idPre = "hpv.";
 	}
 
-	HPVProjectChecker.prototype = new BaseProjectChecker();
-	hpv = new HPVProjectChecker();
 	HPVProjectChecker.prototype = new BaseProjectChecker();
 	hpv = new HPVProjectChecker();
 

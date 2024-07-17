@@ -1368,6 +1368,49 @@ function HivStatusLoader() {
 	}	
 }
 
+function searchForEOrder(patientField){
+	var eorderExternalIdField = document.getElementById('externalOrderNumber');
+	if(eorderExternalIdField){
+		if(eorderExternalIdField.value){
+			return false;
+		} 
+	}
+	if(patientField.value){
+		patientCode  = encodeURIComponent(patientField.value.trim());
+        fetch('rest_eorder/external_id?patientCode='+patientCode)
+        .then(response => {
+            if (response.ok) {
+                const contentType = response.headers.get('content-type');
+                if (contentType && (contentType.includes('text/plain') || contentType.includes('application/json'))) {
+                    return response.text();
+                } else {
+                    console.log('Unexpected content type: ' + contentType);
+                    return false;
+                }
+            } else {
+            	console.log('Network response was not ok: ' + response.statusText);
+            	return false;
+            }
+        }).then(externalId => {
+    		if(externalId){
+    			dirty = false;
+    			window.onbeforeunload = null;
+    			alert('<spring:message code="electronic.order.available"/>'); 
+   			    var newUrl = new URL(window.location.href);
+   			    newUrl.searchParams.set('ID', externalId);
+   			    window.location.href = newUrl.toString();
+    
+    		}
+        }) .catch(error => {
+        	console.error('There was a problem with the fetch operation:', error);
+            return false;
+        });
+	}
+}
+
+
+
+
 // Define all of the loaders as Loaders and create one of each
 PatientLoader.prototype = new BaseLoader();
 ObservationHistoryLoader.prototype = new BaseLoader();

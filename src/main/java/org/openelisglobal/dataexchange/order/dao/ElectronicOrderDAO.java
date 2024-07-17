@@ -53,5 +53,7 @@ public interface ElectronicOrderDAO extends BaseDAO<ElectronicOrder, String> {
 
     public List<ElectronicOrder> getAllElectronicOrdersMatchingAnyValue(List<String> identifierValues,
             String patientValue, SortOrder order);
+    
+    public ElectronicOrder getLastEnteredByPatientIdentifier(String patientIdentifier);
 
 }
