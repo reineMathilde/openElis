@@ -6,13 +6,13 @@
 
 <tiles-definitions>
 
-	<definition name="404ErrorPage"
+
+    <definition name="404ErrorPage"
 		template="/pages/common/error/defaultNotFoundPage.jsp">
 	</definition>
 	<definition name="PageNotFound"
 		template="/pages/common/error/defaultNotFoundPage.jsp">
 	</definition>
-
 	<definition name="endpointdoc"
 		template="/pages/dev/endpointdoc.jsp">
 	</definition>
@@ -431,6 +431,29 @@
 		<put-attribute name="footerFragment"
 			value="/pages/common/saveCancelFooterButtons.jsp" />
 	</definition>
+
+
+	<definition name="sampleMicrobioEntryDefinition"
+		extends="baseDefinition">
+		<put-attribute name="preSelectionHeaderFragment"
+			value="/pages/common/actionSuccess.jsp" />
+		<put-attribute name="bodyFragment"
+			value="/pages/sample/sampleMicrobioEntry.jsp" />
+			
+		<put-attribute name="footerFragment"
+			value="/pages/common/saveCancelFooterButtons.jsp" />			
+	</definition>
+
+
+
+
+
+
+
+
+
+
+
 
 	<definition name="sampleEntryEIDDefinition"
 		extends="baseDefinition">
@@ -1524,5 +1547,8 @@
 		<put-attribute name="patientEnhancedSearchFragment"
 			value="/pages/patient/patientEnhancedSearch.jsp" />
 	</definition>
+	
+	
+
 
 </tiles-definitions>

@@ -70,6 +70,8 @@ public class ReportImplementationFactory {
                 return new PatientClinicalReport();
             }else if (report.equals("TBPatientReport")) {
                 return new PatientClinicalReport();
+            } else if (report.equals("BacterioPatientReport")) {
+                    return new PatientClinicalReport();
             }else if (report.equals("indicatorHaitiClinicalHIV")) {
                 return new IndicatorHIV();
             } else if (report.equals("indicatorHaitiLNSPHIV")) {
@@ -202,6 +204,8 @@ public class ReportImplementationFactory {
             	return new PatientCILNSPClinical();
             } else if (report.equals("TBPatientReport")) {
             	return new TBPatientReport();
+            } else if (report.equals("BacterioPatientReport")) {
+            	return new BacterioPatientReport();
             } else if (report.equals("indicatorHaitiClinicalHIV")) {
                 return new IndicatorHIV();
             } else if (report.equals("indicatorHaitiLNSPHIV")) {

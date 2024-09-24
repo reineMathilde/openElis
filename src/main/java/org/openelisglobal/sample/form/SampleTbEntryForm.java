@@ -82,6 +82,7 @@ public class SampleTbEntryForm extends BaseForm {
     @NotBlank()
     @Pattern(regexp = ValidationHelper.GENDER_REGEX)
     private String patientGender;
+    
     // ages are display only
     private String patientAge;
     

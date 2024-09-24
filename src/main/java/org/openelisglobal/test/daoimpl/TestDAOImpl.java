@@ -716,7 +716,9 @@ public class TestDAOImpl extends BaseDAOImpl<Test, String> implements TestDAO {
         try {
             Query<Test> query = entityManager.unwrap(Session.class).createNativeQuery(sql, Test.class);
             query.setParameter("method", methodIds);
+           // System.out.println("Début de la méthode getPanelTestsElement avec method: " + method);
             List<Test> tests = query.list();
+           // System.out.println("Nombre de tests récupérés: " + tests);
             return tests;
         } catch (HibernateException e) {
             handleException(e, "getTbTestByMethod");
@@ -724,6 +726,12 @@ public class TestDAOImpl extends BaseDAOImpl<Test, String> implements TestDAO {
 
         return null;
 	}
+	
+
+	
+	
+	
+	
 	
 	@Override
 	public List<Test> getTbTest() throws LIMSRuntimeException {
@@ -738,6 +746,9 @@ public class TestDAOImpl extends BaseDAOImpl<Test, String> implements TestDAO {
 
         return null;
 	}
+	
+
+	
 	@Override
 	public List<Panel> getTbPanelsByMethod(String method) throws LIMSRuntimeException {
 		List<Integer> methodIds = Arrays.asList(method.split(",")).stream().map(e->Integer.parseInt(e)).collect(Collectors.toList());
@@ -754,4 +765,101 @@ public class TestDAOImpl extends BaseDAOImpl<Test, String> implements TestDAO {
 
         return null;
 	}
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	@Override
+	public List<Test> getBacterioTest() throws LIMSRuntimeException {
+        String sql = "SELECT t.* From test t JOIN test_section ts ON t.test_section_id = ts.id where t.is_active='Y' AND ts.name = 'Bacterio' ORDER BY t.name";
+        try {
+            Query<Test> query = entityManager.unwrap(Session.class).createNativeQuery(sql, Test.class);
+            List<Test> tests = query.list();
+            return tests;
+        } catch (HibernateException e) {
+            handleException(e, "getBacterioTest");
+        }
+
+        return null;
+	}
+	
+	
+	@Override
+	public List<Test> getbacterioTestBySampleType(String sampleType) throws LIMSRuntimeException {
+		List<Integer> sampleTypeIds = Arrays.asList(sampleType.split(",")).stream().map(e->Integer.parseInt(e)).collect(Collectors.toList());
+        String sql = "SELECT t.* "
+                + "FROM test t "
+                + "JOIN sampletype_test tm ON t.id = tm.test_id "
+                + "JOIN test_section ts ON t.test_section_id = ts.id "
+                + "WHERE tm.sample_type_id IN (:sampleType) "
+                + "AND t.is_active = 'Y' "
+                + "AND ts.name = 'Bacterio' "
+                + "ORDER BY t.name";
+        try {
+        	//System.out.println("Exécution de la requête SQL: " + sql);
+            Query<Test> query = entityManager.unwrap(Session.class).createNativeQuery(sql, Test.class);
+            query.setParameter("sampleType", sampleTypeIds);
+           // System.out.println("Début de la méthode getPanelTestsElement avec sample: " + sampleType);
+            List<Test> tests = query.list();
+            //System.out.println("Nombre de tests bacterio récupérés: " + tests);
+            return tests;
+        } catch (HibernateException e) {
+            handleException(e, "getBacterioTestByMethod");
+        }
+
+        return null;
+	}
+	
+	
+	@Override
+	public List<Panel> getbacterioPanelsBySampleType(String sampleType) throws LIMSRuntimeException {
+	    List<Integer> sampleTypeIds = Arrays.asList(sampleType.split(",")).stream()
+	            .map(e -> Integer.parseInt(e)).collect(Collectors.toList());
+
+	    String sql = "SELECT  DISTINCT p.* " +
+                "FROM panel p " +
+                "JOIN bacterio_sample_panel tm ON p.id = tm.panel_id " +
+                "JOIN sampletype_test stt ON tm.sample_type_id = stt.sample_type_id " +
+                "JOIN test t ON stt.test_id = t.id " +
+                "JOIN test_section ts ON t.test_section_id = ts.id " +
+                "WHERE tm.sample_type_id IN (:sampleType) " +
+                "AND ts.name = 'Bacterio' " +
+                "AND p.is_active = 'Y' " +
+                "ORDER BY p.name";
+
+	  
+	    try {
+	        Query<Panel> query = entityManager.unwrap(Session.class).createNativeQuery(sql, Panel.class);
+	        query.setParameter("sampleType", sampleTypeIds);
+	        List<Panel> panels = query.list();
+	       // System.out.println("Début de la méthode panels  avec sampleType: " + panels);
+	        return panels;
+	    } catch (HibernateException e) {
+	        handleException(e, "getbacterioPanelsBySampleType");
+	    }
+
+	    return null;
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
 }

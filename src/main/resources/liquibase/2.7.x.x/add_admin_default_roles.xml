@@ -22,6 +22,7 @@
         <insert tableName="lab_unit_role_map" schemaName="clinlims">
 			<column name="lab_unit" value="AllLabUnits" />
 		</insert>
+		
          <insert tableName="lab_roles" schemaName="clinlims"> 
 			<column name="lab_unit_role_map_id" valueComputed="(SELECT MAX(lab_unit_role_map_id) FROM lab_unit_role_map)" />
             <column name="role" valueComputed="(SELECT id FROM system_role WHERE name = 'Reception')" />

@@ -78,6 +78,8 @@
 		</insert>
 	</changeSet>
 	
+	
+	
     <changeSet author="CIV developer Group" id="2023081003" context="ci_TB">
 		<preConditions onFail="MARK_RAN">
 			<tableExists tableName="system_role_module" schemaName="clinlims" />
@@ -105,7 +107,7 @@
 	</changeSet>
 	
 	
-	
+	<!-- new add bacterioPatientReport -->
 	<changeSet author="CIV developer Group" id="2023092401" context="ci_TB">
 		<preConditions onFail="MARK_RAN">
 			<tableExists tableName="menu" schemaName="clinlims" />
@@ -168,7 +170,9 @@
 			<column name="system_module_id" valueComputed="(SELECT id FROM clinlims.system_module WHERE name = 'MicrobiologyTBView')"/>
 		</insert>
 	</changeSet>
-	<changeSet author="CIV developer Group" id="23102501" context="ci_TB">
+	
+	<!-- add BacterioPatientReport -->
+	<changeSet author="CIV developer Group" id="202431025041" context="ci_TB">
 		<preConditions onFail="MARK_RAN">
 			<tableExists tableName="menu" schemaName="clinlims" />
 			<sqlCheck  expectedResult="0">SELECT count(*) FROM clinlims.menu WHERE element_id = 'menu_report_microbiology_classic'</sqlCheck> 
@@ -179,12 +183,14 @@
 			<column name="parent_id" valueComputed="(SELECT id FROM clinlims.menu WHERE element_id = 'menu_report_microbiology')"/>
 			<column name="presentation_order" value="4"/>
 			<column name="element_id" value="menu_report_microbiology_classic"/>
+			<column name="action_url" value="/Report?type=patient&amp;report=BacterioPatientReport"/>
 			<column name="display_key" value="banner.menu.microbiology_classic"/>
 			<column name="tool_tip_key" value="tooltip.bannner.menu.microbiology_classic"/>
 			<column name="new_window" value="false"/>
 			<column name="is_active" value="true"/>
 		</insert>
 	</changeSet>
+	
 	<changeSet author="CIV developer Group" id="23102502" context="ci_TB">
 		<preConditions onFail="MARK_RAN">
 			<tableExists tableName="menu" schemaName="clinlims" />
@@ -198,6 +204,7 @@
 			</whereParams>
 		</update>
 	</changeSet>
+	
 	
 	<changeSet author="CIV developer Group" id="23102503" context="ci_TB">
 		<preConditions onFail="MARK_RAN">
@@ -271,5 +278,116 @@
 			</whereParams>
 		</update>
 	</changeSet>
+	
+	
+	
+	<!-- ajouter un systeme role pour microbio -->
+	
+	
+	  <changeSet author="CIV developer Group" id="2024082001" context="ci_TB">
+		<preConditions onFail="MARK_RAN">
+			<tableExists tableName="system_module" schemaName="clinlims" />
+			<sqlCheck  expectedResult="0">SELECT count(*) FROM clinlims.system_module WHERE name = 'MicrobiologyClassic'</sqlCheck> 
+		</preConditions>
+		<comment>Add a module for microbiology Classic</comment>
+		<insert tableName="system_module" schemaName="clinlims">
+			<column name="id" valueSequenceNext="system_module_seq"/>
+			<column name="name" value="MicrobiologyClassic"/>
+			<column name="description" value=""/>
+			<column name="has_select_flag" value="Y"/>
+            <column name="has_add_flag" value="Y"/>
+            <column name="has_update_flag" value="Y"/>
+            <column name="has_delete_flag" value="Y"/>
+		</insert>
+	</changeSet>
+	
+		<!-- ajouter un systeme role pour microbioclassic -->
+	
+	
+	  <changeSet author="CIV developer Group" id="2024081002" context="ci_TB">
+		<preConditions onFail="MARK_RAN">
+			<tableExists tableName="system_role_module" schemaName="clinlims" />
+			<sqlCheck expectedResult="1">
+				SELECT COUNT(*) FROM clinlims.system_role WHERE name = 'Reception'
+			</sqlCheck>
+			<sqlCheck expectedResult="1">
+				SELECT COUNT(*) FROM clinlims.system_module WHERE name = 'MicrobiologyClassic'
+			</sqlCheck>
+		</preConditions>
+		<comment>Add roles for Microbiology classic </comment>
+        <insert tableName="system_module_url" schemaName="clinlims">
+			<column name="id" valueSequenceNext="system_module_url_seq"/>
+			<column name="url_path" value="/MicrobiologyClassic"/>
+			<column name="system_module_id" valueComputed="(SELECT id FROM clinlims.system_module WHERE name = 'MicrobiologyClassic')"/>
+		</insert>
+		<insert tableName="system_role_module" schemaName="clinlims">
+			<column name="id" valueSequenceNext="system_role_module_seq"/>
+			<column name="has_select" value="Y"/>
+			<column name="has_add" value="Y"/>
+			<column name="has_update" value="Y"/>
+			<column name="system_role_id" valueComputed="(SELECT id FROM clinlims.system_role WHERE name = 'Reception')"/>
+			<column name="system_module_id" valueComputed="(SELECT id FROM clinlims.system_module WHERE name = 'MicrobiologyClassic')"/>
+		</insert>
+	</changeSet>
+	
+	
+	
+		<changeSet author="CIV developer Group" id="2024082401" context="ci_TB">
+		<preConditions onFail="MARK_RAN">
+			<tableExists tableName="system_role_module" schemaName="clinlims" />
+			<sqlCheck expectedResult="1">
+				SELECT COUNT(*) FROM clinlims.system_role WHERE name = 'Reception'
+			</sqlCheck>
+			<sqlCheck expectedResult="1">
+				SELECT COUNT(*) FROM clinlims.system_module WHERE name = 'MicrobiologyClassic'
+			</sqlCheck>
+		</preConditions>
+		<comment>Add roles for baterologieClassic  </comment>
+        <insert tableName="system_module_url" schemaName="clinlims">
+			<column name="id" valueSequenceNext="system_module_url_seq"/>
+			<column name="url_path" value="/MicrobiologyClassic/panel_test"/>
+			<column name="system_module_id" valueComputed="(SELECT id FROM clinlims.system_module WHERE name = 'MicrobiologyClassic')"/>
+		</insert>
+		<insert tableName="system_role_module" schemaName="clinlims">
+			<column name="id" valueSequenceNext="system_role_module_seq"/>
+			<column name="has_select" value="Y"/>
+			<column name="has_add" value="Y"/>
+			<column name="has_update" value="Y"/>
+			<column name="system_role_id" valueComputed="(SELECT id FROM clinlims.system_role WHERE name = 'Reception')"/>
+			<column name="system_module_id" valueComputed="(SELECT id FROM clinlims.system_module WHERE name = 'MicrobiologyClassic')"/>
+		</insert>
+	</changeSet>
+	
+	
+		<!-- new -->
+		
+	<changeSet author="CIV developer Group" id="202410102001" context="ci_TB">
+		<preConditions onFail="MARK_RAN">
+			<tableExists tableName="menu" schemaName="clinlims" />
+			<sqlCheck  expectedResult="1">SELECT count(*) FROM clinlims.menu WHERE element_id = 'menu_report_microbiology_classic'</sqlCheck> 
+			<sqlCheck  expectedResult="0">SELECT count(*) FROM clinlims.menu WHERE element_id = 'menu_bacterio_patient_report'</sqlCheck> 
+		</preConditions>
+		<comment>Add menu entry for microbio report</comment>
+		<insert tableName="menu" schemaName="clinlims">
+			<column name="id" valueSequenceNext="menu_seq"/>
+			<column name="parent_id" valueComputed="(SELECT id FROM clinlims.menu WHERE element_id = 'menu_report_microbiology_classic')"/>
+			<column name="presentation_order" value="1"/>
+			<column name="element_id" value="menu_bacterio_patient_report"/>
+			<column name="action_url" value="/Report?type=patient&amp;report=BacterioPatientReport"/>
+			<column name="display_key" value="openreports.patientreports.title"/>
+			<column name="tool_tip_key" value="openreports.patientreports.title"/>
+			<column name="new_window" value="false"/>
+			<column name="is_active" value="true"/>
+		</insert>
+	</changeSet>
+	
+	
+
+	
+	
+	
+	
+	
+	
 	
 </databaseChangeLog>

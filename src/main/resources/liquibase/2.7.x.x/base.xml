@@ -30,5 +30,15 @@
 	<include relativeToChangelogFile="true" file="add_electronic_rejection.xml"/>
 	<include relativeToChangelogFile="true" file="update_document.xml"/>
 	<include relativeToChangelogFile="true" file="add_in_progress_status_eorder.xml"/>
+    <include relativeToChangelogFile="true" file="add_microbio_classic_samples.xml"/>
+    <include relativeToChangelogFile="true" file="add_microbio_classic_dictionary_infos.xml"/>
+    <include relativeToChangelogFile="true" file="add_microbio_classic_tests.xml"/> 
+   <include relativeToChangelogFile="true" file="add_microbioresult_test.xml"/> 
+    <include relativeToChangelogFile="true" file="add_microbio_classic_observation_type.xml"/>
+     <include relativeToChangelogFile="true" file="microbio_classic_table.xml"/>
+    <!-- <include relativeToChangelogFile="true" file="add_table_sample_microbioclassic.xml"/> --> 
+  
+     
 
+	
 </databaseChangeLog>

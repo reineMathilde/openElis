@@ -32,7 +32,8 @@ public class ObservationHistoryServiceImpl extends BaseObjectServiceImpl<Observa
         HIV_STATUS("hivStatus"),VL_PREGNANCY("vlPregnancy"),VL_SUCKLE("vlSuckle"),
         TB_ORDER_REASON("TbOrderReason"),TB_DIAGNOSTIC_REASON("TbDiagnosticReason"),TB_FOLLOWUP_REASON("TbFollowupReason"),
         TB_FOLLOWUP_PERIOD_LINE1("TbFollowupReasonPeriodLine1"),TB_FOLLOWUP_PERIOD_LINE2("TbFollowupReasonPeriodLine2"),TB_ANALYSIS_METHOD("TbAnalysisMethod"),
-        TB_SAMPLE_ASPECT("TbSampleAspects");
+        TB_SAMPLE_ASPECT("TbSampleAspects"), TYPE_DEMANDE("BacterioTypeExamens"), ETAT_SPECIMEN("TbSpecimenState"), NO_CONFORMITY("NoConformity"),MICROBIO_CLINICAL_INFO("clinicalInfo")
+        ,SERVICE_LIST("originalservice"), PRESCRIPTION_TYPE("PrescriptionType"), URGENT_CARACTERE("Urgence"), STUDY_EDUCATION("Study"), GESTE_INVASIF("Gesteinvasif");
 
         private String dbName;
 

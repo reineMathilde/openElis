@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+	  
+	  <changeSet author="CIV developer Group" id="20240909067" context="ci_TB">
+    <preConditions onFail="MARK_RAN">
+        <not>
+            <sequenceExists sequenceName="sample_microbio_classic_seq" schemaName="clinlims" />
+        </not>
+    </preConditions>
+    <createSequence sequenceName="sample_microbio_classic_seq" incrementBy="1" cycle="false" cacheSize="200" startValue="1" schemaName="clinlims" />
+</changeSet>
+
+<changeSet author="CIV developer Group" id="2024092061" context="ci_TB">
+    <preConditions onFail="MARK_RAN">
+        <not>
+            <tableExists tableName="sample_microbio_classic" schemaName="clinlims" />
+        </not>
+    </preConditions>
+    <createTable tableName="sample_microbio_classic" schemaName="clinlims">
+   
+        
+        <column name="id" type="integer"
+				defaultValueComputed="nextval('sample_microbio_classic_seq')">
+				<constraints primaryKey="true" />
+			</column>
+        <column name="lastupdated" type="timestamp">
+            <constraints nullable="false" />
+        </column>
+        <column name="epidemiological_week" type="varchar(255)" />
+        <column name="education" type="varchar(255)" />
+        <column name="patient_profession" type="varchar(255)" />
+        <column name="hospitalisation" type="varchar(255)" />
+        <column name="bedroom_number" type="varchar(255)" />
+        <column name="clinical_information" type="varchar(255)" />
+        <column name="other_clinical_information" type="varchar(255)" />
+        <column name="epi_middle_name" type="varchar(255)" />
+        <column name="treatment_duration" type="varchar(255)" />
+        <column name="traitement_encours" type="varchar(255)" />
+        <column name="hospitalisation_recent" type="varchar(255)" />
+        <column name="hospitalisation_number" type="varchar(255)" />
+        <column name="invasif_gesture" type="varchar(255)" />
+        <column name="device" type="varchar(255)" />
+        <column name="patient_id" type="numeric">
+        </column>
+        <column name="other_info_clinical" type="varchar(255)" />
+        <column name="other_original_service" type="varchar(255)" />
+    </createTable>
+</changeSet>
+	  
+	  
+	  
+	  
+	  
+	  
+</databaseChangeLog>

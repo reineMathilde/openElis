@@ -145,6 +145,7 @@
 			null,null,'GeneXpert MTB/RIF',1,'GeneXpert MTB/RIF','t','c9413e2e-8979-440f-9673-6bf1ddc73f6f',
 			(select id	from localization where description = 'test name' and french = 'GeneXpert MTB/RIF' limit 1),
 			(select id from localization where	description = 'test report name' and french = 'GeneXpert MTB/RIF' limit 1),	null,'f'),
+			
 			(nextval('test_seq'),null,null,'TB LAMP','',null,null,'Y',null,null,'N',null,null,null,null,null,null,now(),null,null,
 			(select id	from test_section where name = 'TB' limit 1),
 			null,null,'TB LAMP',1,'TB LAMP','t','837e42e0-e9a1-45dd-b89d-2e764553448b',
@@ -245,11 +246,15 @@
 			null,null,'Linezolid',1,'Linezolid','t','7681ae7b-f62c-4480-a83b-18a008d336e2',
 			(select id	from localization where description = 'test name' and french = 'Linezolid' limit 1),
 			(select id from localization where	description = 'test report name' and french = 'Linezolid' limit 1),null,'f'),
+			
+			
 			(nextval('test_seq'),null,null,'Moxifloxacine','',null,null,'Y',null,null,'N',null,null,null,null,null,null,now(),null,null,
 			(select id	from test_section where name = 'TB' limit 1),
 			null,null,'Moxifloxacine',1,'Moxifloxacine','t','b10587c8-d3b5-486c-bac2-8d07c62144d7',
 			(select id	from localization where description = 'test name' and french = 'Moxifloxacine' limit 1),
 			(select id from localization where	description = 'test report name' and french = 'Moxifloxacine' limit 1),null,'f'),
+			
+			
 			(nextval('test_seq'),null,null,'Clofazimine','',null,null,'Y',null,null,'N',null,null,null,null,null,null,now(),null,null,
 			(select id	from test_section where name = 'TB' limit 1),
 			null,null,'Clofazimine',1,'Clofazimine','t','6834169e-c1d2-49ba-9272-34d4fda0519e',
@@ -1145,6 +1150,7 @@
 			2,0,'Infinity',null,'-Infinity','Infinity','-Infinity','Infinity',now(),null,'f'),
 			(nextval('result_limits_seq'),(select id from test where description = 'Delamanide'),
 			2,0,'Infinity',null,'-Infinity','Infinity','-Infinity','Infinity',now(),null,'f'),
+			
 			(nextval('result_limits_seq'),(select id from test where description = 'TB LAM urinaire'),
 			2,0,'Infinity',null,'-Infinity','Infinity','-Infinity','Infinity',now(),null,'f');
 		</sql>
@@ -1863,6 +1869,9 @@
 			(select id from test where name ='Delamanide' limit 1),'Y');
 		</sql>
 	</changeSet>
+	
+	
+	
 	
 	<!-- add TB panels -->
 	<changeSet author="CIV developer Group" id="2023092109"

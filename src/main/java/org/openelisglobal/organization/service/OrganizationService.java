@@ -55,4 +55,7 @@ public interface OrganizationService extends BaseObjectService<Organization, Str
     List<Organization> getActiveOrganizations();
 
     Organization getOrganizationByFhirId(String idPart);
+    
+    // Ajouter nouvelle méthode
+   // List<Organization> getOrganizationsByRegionId(String regionId);
 }

@@ -228,5 +228,14 @@ public class OrganizationServiceImpl extends BaseObjectServiceImpl<Organization,
     public Organization getOrganizationByFhirId(String uuid) {
         return baseObjectDAO.getOrganizationByFhirId(uuid);
     }
+    
+    
+   // @Override
+   // @Transactional(readOnly = true)
+    //public List<Organization> getOrganizationsByRegionId(String regionId) {
+        // On suppose que chaque district a une référence à son identifiant de région parent
+      //  return getBaseObjectDAO().getOrganizationsByParentId(regionId);
+    //}
+
 
 }

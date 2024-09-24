@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="org.openelisglobal.samplemicrobioclassik.valueholder.Samplemicrobioclassic" table="SAMPLE_MICROBIO_CLASSIC" dynamic-update="true" optimistic-lock="version">
+        <id name="id" type="org.openelisglobal.hibernate.resources.usertype.LIMSStringNumberUserType">
+            <column name="ID" precision="10" scale="0" />
+            <generator class="org.openelisglobal.hibernate.resources.StringSequenceGenerator">
+                <param name="sequence_name">sample_microbio_classic_seq</param>
+            </generator>
+        </id>
+
+        <version name="lastupdated" column="LASTUPDATED" type="timestamp" access="field"/>
+        <property name="epidemiologicalWeek" column="EPIDEMIOLOGICAL_WEEK" type="string" />
+        <property name="education" column="EDUCATION" type="string" />
+        <property name="patientProfession" column="PATIENT_PROFESSION" type="string" />
+        <property name="hospitalisation" column="HOSPITALISATION" type="string" />
+        <property name="bedroomnumber" column="BEDROOM_NUMBER" type="string" />
+        <property name="clinicalInformation" column="CLINICAL_INFORMATION" type="string" />
+        <property name="otherclinicalInformation" column="OTHER_CLINICAL_INFORMATION" type="string" />
+        <property name="epiMiddleName" column="EPI_MIDDLE_NAME" type="string" />
+        <property name="treatmentduration" column="TREATMENT_DURATION" type="string" />
+        <property name="traitementEncours" column="TRAITEMENT_ENCOURS" type="string" />
+        <property name="hospitalisationRecent" column="HOSPITALISATION_RECENT" type="string" />
+        <property name="hospitalisationnumber" column="HOSPITALISATION_NUMBER" type="string" />
+        <property name="invasifgesture" column="INVASIF_GESTURE" type="string" />
+        <property name="device" column="DEVICE" type="string" />  
+        <many-to-one name="patientId"
+			class="org.openelisglobal.patient.valueholder.Patient" fetch="select" lazy="false">
+			<column name="PATIENT_ID" precision="10" scale="0" />
+		</many-to-one>
+        <property name="otherInfoClinical" column="OTHER_INFO_CLINICAL" type="string" />
+        <property name="otherOrginalservice" column="OTHER_ORIGINAL_SERVICE" type="string" />
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,678 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+	<changeSet author="CIV developer Group" id="2024112215"
+		context="ci_TB">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">SELECT count(*) FROM
+				clinlims.dictionary_category WHERE description = 'originalservice'
+			</sqlCheck>
+		</preConditions>
+		<insert tableName="dictionary_category" schemaName="clinlims">
+			<column name="id" valueSequenceNext="dictionary_category_seq" />
+			<column name="description" value="originalservice" />
+			<column name="lastupdated" valueDate="now()" />
+			<column name="local_abbrev" value="servicesor" />
+			<column name="name" value="originalservice" />
+		</insert>
+	</changeSet>
+
+	<changeSet author="CIV developer Group" id="2024112211"
+		context="ci_TB">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">SELECT count(*) FROM
+				clinlims.dictionary_category WHERE description = 'payment'
+			</sqlCheck>
+		</preConditions>
+		<insert tableName="dictionary_category" schemaName="clinlims">
+			<column name="id" valueSequenceNext="dictionary_category_seq" />
+			<column name="description" value="payment" />
+			<column name="lastupdated" valueDate="now()" />
+			<column name="local_abbrev" value="payment" />
+			<column name="name" value="payment" />
+		</insert>
+	</changeSet>
+	
+	
+	
+	
+	<changeSet author="CIV developer Group" id="2024112212"
+		context="ci_TB">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">SELECT count(*) FROM
+				clinlims.dictionary_category WHERE description = 'clinical Information'
+			</sqlCheck>
+		</preConditions>
+		<insert tableName="dictionary_category" schemaName="clinlims">
+			<column name="id" valueSequenceNext="dictionary_category_seq"/>
+			<column name="description" value ="clinical Information"/>
+			<column name="lastupdated" valueDate ="now()"/>
+			<column name="local_abbrev" value ="Microbio"/>
+			<column name="name" value ="clinical Information"/>
+		</insert>
+	</changeSet>
+	
+	
+	<!--  dictionary category -->
+	<changeSet author="CIV developer Group" id="2024112213"
+		context="ci_TB">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">SELECT count(*) FROM
+				clinlims.dictionary_category WHERE description = 'procedures'
+			</sqlCheck>
+		</preConditions>
+		<insert tableName="dictionary_category" schemaName="clinlims">
+			<column name="id" valueSequenceNext="dictionary_category_seq"/>
+			<column name="description" value ="procedures"/>
+			<column name="lastupdated" valueDate ="now()"/>
+			<column name="local_abbrev" value ="procedures"/>
+			<column name="name" value ="procedures"/>
+		</insert>
+	</changeSet>
+	
+	
+		<changeSet author="CIV developer Group" id="2024112214"
+		context="ci_TB">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">SELECT count(*) FROM
+				clinlims.dictionary_category WHERE description = 'educations'
+			</sqlCheck>
+		</preConditions>
+		<insert tableName="dictionary_category" schemaName="clinlims">
+			<column name="id" valueSequenceNext="dictionary_category_seq"/>
+			<column name="description" value ="educations"/>
+			<column name="lastupdated" valueDate ="now()"/>
+			<column name="local_abbrev" value ="educations"/>
+			<column name="name" value ="educations"/>
+		</insert>
+	</changeSet>
+	
+		<changeSet author="CIV developer Group" id="2024112216"
+		context="ci_TB">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">SELECT count(*) FROM
+				clinlims.dictionary_category WHERE description = 'order Type'
+			</sqlCheck>
+		</preConditions>
+		<insert tableName="dictionary_category" schemaName="clinlims">
+			<column name="id" valueSequenceNext="dictionary_category_seq"/>
+			<column name="description" value ="order Type"/>
+			<column name="lastupdated" valueDate ="now()"/>
+			<column name="local_abbrev" value ="orderTyp"/>
+			<column name="name" value ="order Type"/>
+		</insert>
+	</changeSet>
+	
+	
+	
+		<changeSet author="CIV developer Group" id="2024112217"
+		context="ci_TB">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">SELECT count(*) FROM
+				clinlims.dictionary_category WHERE description = 'urgent'
+			</sqlCheck>
+		</preConditions>
+		<insert tableName="dictionary_category" schemaName="clinlims">
+			<column name="id" valueSequenceNext="dictionary_category_seq"/>
+			<column name="description" value ="urgent"/>
+			<column name="lastupdated" valueDate ="now()"/>
+			<column name="local_abbrev" value ="urgent"/>
+			<column name="name" value ="urgent"/>
+		</insert>
+	</changeSet>
+	
+	
+	<changeSet author="CIV developer Group" id="2024082430"
+		context="ci_TB">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">SELECT count(*) FROM
+				clinlims.dictionary_category WHERE description = 'exam Request'
+			</sqlCheck>
+		</preConditions>
+		<insert tableName="dictionary_category" schemaName="clinlims">
+			<column name="id" valueSequenceNext="dictionary_category_seq"/>
+			<column name="description" value ="exam Request"/>
+			<column name="lastupdated" valueDate ="now()"/>
+			<column name="local_abbrev" value ="examReq"/>
+			<column name="name" value ="exam Request"/>
+		</insert>
+	</changeSet>
+	
+	
+		<changeSet author="CIV developer Group" id="2024082601"
+		context="ci_TB">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">SELECT count(*) FROM
+				clinlims.dictionary_category WHERE description = 'dispositif'
+			</sqlCheck>
+		</preConditions>
+		<insert tableName="dictionary_category" schemaName="clinlims">
+			<column name="id" valueSequenceNext="dictionary_category_seq"/>
+			<column name="description" value ="dispositif"/>
+			<column name="lastupdated" valueDate ="now()"/>
+			<column name="local_abbrev" value ="dispositif"/>
+			<column name="name" value ="dispositif"/>
+		</insert>
+	</changeSet>
+	
+	
+		
+		<changeSet author="CIV developer Group" id="2024082700"
+		context="ci_TB">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">SELECT count(*) FROM
+				clinlims.dictionary_category WHERE description = 'specimens'
+			</sqlCheck>
+		</preConditions>
+		<insert tableName="dictionary_category" schemaName="clinlims">
+			<column name="id" valueSequenceNext="dictionary_category_seq"/>
+			<column name="description" value ="specimens"/>
+			<column name="lastupdated" valueDate ="now()"/>
+			<column name="local_abbrev" value ="specimens"/>
+			<column name="name" value ="specimens"/>
+		</insert>
+	</changeSet>
+	
+
+	
+		<changeSet author="CIV developer Group" id="2024082701"
+		context="ci_TB">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="0">SELECT count(*) FROM
+				clinlims.dictionary_category WHERE description = 'no conformity'
+			</sqlCheck>
+		</preConditions>
+		<insert tableName="dictionary_category" schemaName="clinlims">
+			<column name="id" valueSequenceNext="dictionary_category_seq"/>
+			<column name="description" value ="no conformity"/>
+			<column name="lastupdated" valueDate ="now()"/>
+			<column name="local_abbrev" value ="noconf"/>
+			<column name="name" value ="no conformity"/>
+		</insert>
+	</changeSet>
+	
+	
+
+	<!-- Microbio classic dictionary entries -->
+	<changeSet author="CIV developer Group" id="2024112245"
+		context="ci_TB">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="1">SELECT count(*) FROM
+				clinlims.dictionary_category WHERE description = 'originalservice'
+				limit 1
+			</sqlCheck>
+		</preConditions>
+		<sql>
+			INSERT INTO clinlims.dictionary (
+			id,
+			is_active,
+			dict_entry,
+			lastupdated,
+			local_abbrev,
+			dictionary_category_id,
+			display_key,
+			sort_order,
+			name_localization_id
+			) VALUES
+			(nextval('dictionary_seq'),'Y','Pediatrie',now(),'pediatrie',(SELECT
+			id FROM clinlims.dictionary_category WHERE description =
+			'originalservice' LIMIT 1),'label.pediatrie',70000,NULL),
+			
+			(nextval('dictionary_seq'),'Y','Nephrologie',now(),'nephrologie',(SELECT
+			id FROM clinlims.dictionary_category WHERE description =
+			'originalservice' LIMIT 1),'label.nephrologie',70001,NULL),
+			
+			(nextval('dictionary_seq'),'Y','Medecine',now(),'medecine',(SELECT id
+			FROM clinlims.dictionary_category WHERE description =
+			'originalservice' LIMIT 1),'label.medecine',70002,NULL),
+			
+			(nextval('dictionary_seq'),'Y','Chirurgie',now(),'chirurgie',(SELECT
+			id FROM clinlims.dictionary_category WHERE description =
+			'originalservice' LIMIT 1),'label.chirurgie',70003,NULL),
+			
+			(nextval('dictionary_seq'),'Y','Gynecologie',now(),'gynecologie',(SELECT
+			id FROM clinlims.dictionary_category WHERE description =
+			'originalservice' LIMIT 1),'label.gynecologie',70003,NULL),
+
+			(nextval('dictionary_seq'),'Y','Urgences
+			Chirurgie',now(),'urgencesChir',(SELECT id FROM
+			clinlims.dictionary_category WHERE description = 'originalservice'
+			LIMIT 1),'label.urgencesChirurgie',70003,NULL),
+			
+			
+			(nextval('dictionary_seq'),'Y','Urgences
+			medecine',now(),'UrgencesMed',(SELECT id FROM
+			clinlims.dictionary_category WHERE description = 'originalservice'
+			LIMIT 1),'label.UrgencesMedecine',70003,NULL),
+
+			(nextval('dictionary_seq'),'Y','Reanimation',now(),'reanimation',(SELECT
+			id FROM clinlims.dictionary_category WHERE description =
+			'originalservice' LIMIT 1),'label.reanimation',70003,NULL),
+			
+			(nextval('dictionary_seq'),'Y','Cardiologie',now(),'cardiologie',(SELECT
+			id FROM clinlims.dictionary_category WHERE description =
+			'originalservice' LIMIT 1),'label.cardiologie',70003,NULL),
+			
+			(nextval('dictionary_seq'),'Y','Odonto-stomatologie',now(),'odontoStom',(SELECT
+			id FROM clinlims.dictionary_category WHERE description =
+			'originalservice' LIMIT 1),'label.odonto',70003,NULL),
+			
+			(nextval('dictionary_seq'),'Y','Vénérologie',now(),'vénérologie',(SELECT
+			id FROM clinlims.dictionary_category WHERE description =
+			'originalservice' LIMIT 1),'label.venerologie',70003,NULL),	
+			
+			(nextval('dictionary_seq'),'Y','Urgences
+			gynécologique',now(),'UrgencesGyn',(SELECT id FROM
+			clinlims.dictionary_category WHERE description = 'originalservice'
+			LIMIT 1),'label.UrgencesGyneco',70003,NULL),
+			
+			(nextval('dictionary_seq'),'Y','Orphtalmologie',now(),'orphtalmologie',(SELECT
+			id FROM clinlims.dictionary_category WHERE description =
+			'originalservice' LIMIT 1),'label.orphtalmologie',70003,NULL),	
+			
+			(nextval('dictionary_seq'),'Y','Urgences pediatrique',now(),'UrgencePedi',(SELECT
+			id FROM clinlims.dictionary_category WHERE description =
+			'originalservice' LIMIT 1),'label.UrgencePedi',70003,NULL),
+			
+				(nextval('dictionary_seq'),'Y','ORL',now(),'orl',(SELECT
+			id FROM clinlims.dictionary_category WHERE description =
+			'originalservice' LIMIT 1),'label.orl',70003,NULL),
+			
+				(nextval('dictionary_seq'),'Y','Dermatologie',now(),'dermatologie',(SELECT
+			id FROM clinlims.dictionary_category WHERE description =
+			'originalservice' LIMIT 1),'label.dermatologie',70003,NULL),
+			
+			
+			(nextval('dictionary_seq'),'Y','Autre',now(),'autre',(SELECT id FROM
+			clinlims.dictionary_category WHERE description = 'originalservice'
+			LIMIT 1),'label.autre',70003,NULL);
+
+
+		</sql>
+	</changeSet>
+
+	<changeSet author="CIV developer Group" id="2024112241"
+		context="ci_TB">
+		<preConditions onFail="MARK_RAN">
+			<sqlCheck expectedResult="1">SELECT count(*) FROM
+				clinlims.dictionary_category WHERE description = 'payment' limit 1
+			</sqlCheck>
+		</preConditions>
+		<sql>
+			INSERT INTO clinlims.dictionary (
+			id,
+			is_active,
+			dict_entry,
+			lastupdated,
+			local_abbrev,
+			dictionary_category_id,
+			display_key,
+			sort_order,
+			name_localization_id
+			) VALUES
+			(nextval('dictionary_seq'),'Y','assurance',now(),'assurance',(SELECT
+			id FROM clinlims.dictionary_category WHERE description = 'payment'
+			LIMIT 1),'label.assurance',70000,NULL),
+			(nextval('dictionary_seq'),'Y','espèce',now(),'espece',(SELECT id
+			FROM clinlims.dictionary_category WHERE description = 'payment' LIMIT
+			1),'label.espece',70001,NULL),
+			(nextval('dictionary_seq'),'Y','Tarif réduit',now(),'Tarifreduit',(SELECT id FROM
+			clinlims.dictionary_category WHERE description = 'payment' LIMIT
+			1),'label.tarifreduit',70002,NULL),
+			(nextval('dictionary_seq'),'Y','Gratuité
+			Ciblée',now(),'gratuitcibl',(SELECT id FROM
+			clinlims.dictionary_category WHERE description = 'payment' LIMIT
+			1),'label.gratuitcible',70003,NULL),
+			(nextval('dictionary_seq'),'Y','Gratuité',now(),'gratuit',(SELECT id
+			FROM clinlims.dictionary_category WHERE description = 'payment' LIMIT
+			1),'label.gratuit',70003,NULL);
+		</sql>
+	</changeSet>
+	
+<!-- Microbio TB classic dictionary entries -->
+
+<changeSet author="CIV developer Group" id="2024112242" context="ci_TB">
+    <preConditions onFail="MARK_RAN">
+        <sqlCheck expectedResult="1">SELECT count(*) FROM
+            clinlims.dictionary_category WHERE description = 'clinical Information' limit 1</sqlCheck>
+    </preConditions>
+    <sql>
+        INSERT INTO clinlims.dictionary (
+            id,
+            is_active,
+            dict_entry,
+            lastupdated,
+            local_abbrev,
+            dictionary_category_id,
+            display_key,
+            sort_order,
+            name_localization_id
+        ) VALUES
+            (nextval('dictionary_seq'),'Y','Toux',now(),'toux',(SELECT id FROM clinlims.dictionary_category WHERE description = 'clinical Information' LIMIT 1),'clinical.toux',70000,NULL),
+            (nextval('dictionary_seq'),'Y','Fièvre',now(),'fievre',(SELECT id FROM clinlims.dictionary_category WHERE description = 'clinical Information' LIMIT 1),'clinical.fievre',70001,NULL),
+            (nextval('dictionary_seq'),'Y','Diarrhee',now(),'diarrhee',(SELECT id FROM clinlims.dictionary_category WHERE description = 'clinical Information'  LIMIT 1),'clinical.diarrhee',70002,NULL),
+            (nextval('dictionary_seq'),'Y','Brulure',now(),'BrulureMictionnelle',(SELECT id FROM clinlims.dictionary_category WHERE description = 'clinical Information'  LIMIT 1),'clinical.brulureMictionnelle',70003,NULL),
+                        (nextval('dictionary_seq'),'Y','Ictere',now(),'Ictere',(SELECT id FROM clinlims.dictionary_category WHERE description ='clinical Information'  LIMIT 1),'clinical.ictere',70004,NULL),
+            (nextval('dictionary_seq'),'Y','Autres',now(),'Autres',(SELECT id FROM clinlims.dictionary_category WHERE description = 'clinical Information'  LIMIT 1),'clinical.autres',70005,NULL);
+    </sql>
+</changeSet>
+<changeSet author="CIV developer Group" id="2024082600" context="ci_TB">
+    <preConditions onFail="MARK_RAN">
+        <sqlCheck expectedResult="1">SELECT count(*) FROM
+            clinlims.dictionary_category WHERE description = 'procedures' limit 1</sqlCheck>
+    </preConditions>
+    <sql>
+        INSERT INTO clinlims.dictionary (
+            id,
+            is_active,
+            dict_entry,
+            lastupdated,
+            local_abbrev,
+            dictionary_category_id,
+            display_key,
+            sort_order,
+            name_localization_id
+        ) VALUES
+            (nextval('dictionary_seq'),'Y','cathéterisme',now(),'catheterisme',(SELECT id FROM clinlims.dictionary_category WHERE description = 'procedures' LIMIT 1),'label.catheterisme',70000,NULL),
+            (nextval('dictionary_seq'),'Y','sondageUrinaire',now(),'sondageUrinaire',(SELECT id FROM clinlims.dictionary_category WHERE description = 'procedures' LIMIT 1),'label.sondageUrinaire',70001,NULL),
+            (nextval('dictionary_seq'),'Y','drain',now(),'drain',(SELECT id FROM clinlims.dictionary_category WHERE description = 'procedures'  LIMIT 1),'label.drain',70002,NULL);
+                     
+    </sql>
+</changeSet>
+
+<changeSet author="CIV developer Group" id="2024112244" context="ci_TB">
+    <preConditions onFail="MARK_RAN">
+        <sqlCheck expectedResult="1">SELECT count(*) FROM
+            clinlims.dictionary_category WHERE description = 'educations' limit 1</sqlCheck>
+    </preConditions>
+    <sql>
+        INSERT INTO clinlims.dictionary (
+            id,
+            is_active,
+            dict_entry,
+            lastupdated,
+            local_abbrev,
+            dictionary_category_id,
+            display_key,
+            sort_order,
+            name_localization_id
+        ) VALUES
+            (nextval('dictionary_seq'),'Y','inconnu',now(),'inconnu',(SELECT id FROM clinlims.dictionary_category WHERE description = 'educations' LIMIT 1),'label.none',70000,NULL),
+            (nextval('dictionary_seq'),'Y','primaire',now(),'primaire',(SELECT id FROM clinlims.dictionary_category WHERE description = 'educations' LIMIT 1),'label.primary',70001,NULL),
+            (nextval('dictionary_seq'),'Y','secondaire',now(),'secondaire',(SELECT id FROM clinlims.dictionary_category WHERE description = 'educations'  LIMIT 1),'label.secondary',70002,NULL),
+            (nextval('dictionary_seq'),'Y','superieur',now(),'superieur',(SELECT id FROM clinlims.dictionary_category WHERE description = 'educations'  LIMIT 1),'label.postsecondary',70003,NULL),
+            (nextval('dictionary_seq'),'Y','professionel',now(),'professionel',(SELECT id FROM clinlims.dictionary_category WHERE description = 'educations'  LIMIT 1),'label.professional',70003,NULL);
+                     
+    </sql>
+</changeSet>
+
+
+<changeSet author="CIV developer Group" id="2024112247" context="ci_TB">
+    <preConditions onFail="MARK_RAN">
+        <sqlCheck expectedResult="1">SELECT count(*) FROM
+            clinlims.dictionary_category WHERE description = 'order Type' limit 1</sqlCheck>
+    </preConditions>
+    <sql>
+        INSERT INTO clinlims.dictionary (
+            id,
+            is_active,
+            dict_entry,
+            lastupdated,
+            local_abbrev,
+            dictionary_category_id,
+            display_key,
+            sort_order,
+            name_localization_id
+        ) VALUES
+            (nextval('dictionary_seq'),'Y','ordonnance interne',now(),'orderint',(SELECT id FROM clinlims.dictionary_category WHERE description = 'order Type' LIMIT 1),'label.ordonnanceint',70000,NULL),
+            (nextval('dictionary_seq'),'Y','ordonnance externe',now(),'orderext',(SELECT id FROM clinlims.dictionary_category WHERE description = 'order Type' LIMIT 1),'label.ordonnanceext',70001,NULL);
+           
+                     
+    </sql>
+</changeSet>
+
+ <changeSet author="CIV developer Group" id="2024112248" context="ci_TB">
+    <preConditions onFail="MARK_RAN">
+        <sqlCheck expectedResult="1">SELECT count(*) FROM
+            clinlims.dictionary_category WHERE description = 'urgent' limit 1</sqlCheck>
+    </preConditions>
+    <sql>
+        INSERT INTO clinlims.dictionary (
+            id,
+            is_active,
+            dict_entry,
+            lastupdated,
+            local_abbrev,
+            dictionary_category_id,
+            display_key,
+            sort_order,
+            name_localization_id
+        ) VALUES
+            (nextval('dictionary_seq'),'Y','yes',now(),'yes',(SELECT id FROM clinlims.dictionary_category WHERE description = 'urgent' LIMIT 1),'label.yes',70000,NULL),
+            (nextval('dictionary_seq'),'Y','no',now(),'no',(SELECT id FROM clinlims.dictionary_category WHERE description = 'urgent' LIMIT 1),'label.no',70001,NULL);
+           
+                     
+    </sql>
+</changeSet>
+	
+	 <changeSet author="CIV developer Group" id="2024082470" context="ci_TB">
+    <preConditions onFail="MARK_RAN">
+        <sqlCheck expectedResult="1">SELECT count(*) FROM
+            clinlims.dictionary_category WHERE description = 'exam Request' limit 1</sqlCheck>
+    </preConditions>
+    <sql>
+        INSERT INTO clinlims.dictionary (
+            id,
+            is_active,
+            dict_entry,
+            lastupdated,
+            local_abbrev,
+            dictionary_category_id,
+            display_key,
+            sort_order,
+            name_localization_id
+        ) VALUES
+            (nextval('dictionary_seq'),'Y','Bacteriologique des urines',now(),'bactUrin',(SELECT id FROM clinlims.dictionary_category WHERE description = 'exam Request' LIMIT 1),'label.examRequest',70001,NULL);
+           
+                     
+    </sql>
+</changeSet>
+
+
+
+
+	 <changeSet author="CIV developer Group" id="20240824970" context="ci_TB">
+    <preConditions onFail="MARK_RAN">
+        <sqlCheck expectedResult="1">SELECT count(*) FROM
+            clinlims.dictionary_category WHERE description = 'exam Request' limit 1</sqlCheck>
+    </preConditions>
+    <sql>
+        INSERT INTO clinlims.dictionary (
+            id,
+            is_active,
+            dict_entry,
+            lastupdated,
+            local_abbrev,
+            dictionary_category_id,
+            display_key,
+            sort_order,
+            name_localization_id
+        ) VALUES
+            (nextval('dictionary_seq'),'Y','Bacteriologique de selles(Coproculture)',now(),'bactSelles',(SELECT id FROM clinlims.dictionary_category WHERE description = 'exam Request' LIMIT 1),'label.examselles',70001,NULL),
+            (nextval('dictionary_seq'),'Y','Cytobacteriologique des sécrétions cervico vaginales(PV)',now(),'cervico',(SELECT id FROM clinlims.dictionary_category WHERE description = 'exam Request' LIMIT 1),'label.cervico',70001,NULL);
+           
+                     
+    </sql>
+</changeSet>
+
+
+
+
+<changeSet author="CIV developer Group" id="2024082604" context="ci_TB">
+    <preConditions onFail="MARK_RAN">
+        <sqlCheck expectedResult="1">SELECT count(*) FROM
+            clinlims.dictionary_category WHERE description = 'dispositif' limit 1</sqlCheck>
+    </preConditions>
+    <sql>
+        INSERT INTO clinlims.dictionary (
+            id,
+            is_active,
+            dict_entry,
+            lastupdated,
+            local_abbrev,
+            dictionary_category_id,
+            display_key,
+            sort_order,
+            name_localization_id
+        ) VALUES
+            (nextval('dictionary_seq'),'Y','cathéter veineux',now(),'cat',(SELECT id FROM clinlims.dictionary_category WHERE description = 'dispositif' LIMIT 1),'label.catheter',70000,NULL),
+            (nextval('dictionary_seq'),'Y','prothèse',now(),'prothese',(SELECT id FROM clinlims.dictionary_category WHERE description = 'dispositif' LIMIT 1),'label.prothese',70001,NULL),
+            (nextval('dictionary_seq'),'Y','sonde urinaire',now(),'sonde',(SELECT id FROM clinlims.dictionary_category WHERE description = 'dispositif'  LIMIT 1),'label.sondeUrinaire',70002,NULL);
+                     
+    </sql>
+</changeSet>
+
+
+
+
+<changeSet author="CIV developer Group" id="2024082720" context="ci_TB">
+    <preConditions onFail="MARK_RAN">
+        <sqlCheck expectedResult="1">SELECT count(*) FROM
+            clinlims.dictionary_category WHERE description = 'specimens' limit 1</sqlCheck>
+    </preConditions>
+    <sql>
+        INSERT INTO clinlims.dictionary (
+            id,
+            is_active,
+            dict_entry,
+            lastupdated,
+            local_abbrev,
+            dictionary_category_id,
+            display_key,
+            sort_order,
+            name_localization_id
+        ) VALUES
+            (nextval('dictionary_seq'),'Y','conforme',now(),'conf',(SELECT id FROM clinlims.dictionary_category WHERE description = 'specimens' LIMIT 1),'label.conforme',70000,NULL),
+            (nextval('dictionary_seq'),'Y','non-conforme',now(),'noConf',(SELECT id FROM clinlims.dictionary_category WHERE description = 'specimens' LIMIT 1),'label.noconforme',70001,NULL);
+         
+    </sql>
+</changeSet>
+
+
+	
+
+
+<changeSet author="CIV developer Group" id="2024082721" context="ci_TB">
+    <preConditions onFail="MARK_RAN">
+        <sqlCheck expectedResult="1">SELECT count(*) FROM
+            clinlims.dictionary_category WHERE description = 'no conformity' limit 1</sqlCheck>
+    </preConditions>
+    <sql>
+        INSERT INTO clinlims.dictionary (
+            id,
+            is_active,
+            dict_entry,
+            lastupdated,
+            local_abbrev,
+            dictionary_category_id,
+            display_key,
+            sort_order,
+            name_localization_id
+        ) VALUES
+            (nextval('dictionary_seq'),'Y','Inapproprie',now(),'inapro',(SELECT id FROM clinlims.dictionary_category WHERE description = 'no conformity' LIMIT 1),'label.inappropriate',70000,NULL),
+            (nextval('dictionary_seq'),'Y','Quantité insuffisante',now(),'quant',(SELECT id FROM clinlims.dictionary_category WHERE description ='no conformity' LIMIT 1),'label.insufficient.quantity',70001,NULL),
+            (nextval('dictionary_seq'),'Y','Echantillon souillé',now(),'echant',(SELECT id FROM clinlims.dictionary_category WHERE description = 'no conformity' LIMIT 1),'label.contaminated.sample',70001,NULL);
+         
+    </sql>
+</changeSet>
+
+
+
+
+<changeSet author="CIV developer Group" id="20242009105030" context="ci_TB">
+    <preConditions onFail="MARK_RAN">
+        <sqlCheck expectedResult="1">SELECT count(*) FROM
+            clinlims.dictionary_category WHERE description = 'clinical Information' limit 1</sqlCheck>
+    </preConditions>
+    <sql>
+        INSERT INTO clinlims.dictionary (
+            id,
+            is_active,
+            dict_entry,
+            lastupdated,
+            local_abbrev,
+            dictionary_category_id,
+            display_key,
+            sort_order,
+            name_localization_id
+        ) VALUES
+            (nextval('dictionary_seq'),'Y','Ecoulement urétrale',now(),'uretale',(SELECT id FROM clinlims.dictionary_category WHERE description = 'clinical Information' LIMIT 1),'clinical.uretale',70010,NULL),
+            (nextval('dictionary_seq'),'Y','Bilan de fertilité',now(),'fertilite',(SELECT id FROM clinlims.dictionary_category WHERE description = 'clinical Information' LIMIT 1),'clinical.fertilite',70011,NULL),
+            (nextval('dictionary_seq'),'Y','Leucorrhées',now(),'Leucorrhee',(SELECT id FROM clinlims.dictionary_category WHERE description = 'clinical Information'  LIMIT 1),'clinical.leucholoree',70012,NULL),
+            (nextval('dictionary_seq'),'Y','Pus',now(),'Pus',(SELECT id FROM clinlims.dictionary_category WHERE description = 'clinical Information'  LIMIT 1),'clinical.pus',70013,NULL),
+             (nextval('dictionary_seq'),'Y','Prurite',now(),'prurite',(SELECT id FROM clinlims.dictionary_category WHERE description ='clinical Information'  LIMIT 1),'clinical.prurite',70014,NULL),
+              (nextval('dictionary_seq'),'Y','douleur abdominale',now(),'abdo',(SELECT id FROM clinlims.dictionary_category WHERE description ='clinical Information'  LIMIT 1),'clinical.abdominale',70015,NULL),
+            (nextval('dictionary_seq'),'Y','infection vaginale,',now(),'vaginale',(SELECT id FROM clinlims.dictionary_category WHERE description = 'clinical Information'  LIMIT 1),'clinical.vaginale',70016,NULL);
+    </sql>
+</changeSet>
+
+
+<changeSet author="CIV developer Group" id="20242009105031" context="ci_TB">
+    <preConditions onFail="MARK_RAN">
+        <sqlCheck expectedResult="1">SELECT count(*) FROM
+            clinlims.dictionary_category WHERE description = 'procedures' limit 1</sqlCheck>
+    </preConditions>
+    <sql>
+        INSERT INTO clinlims.dictionary (
+            id,
+            is_active,
+            dict_entry,
+            lastupdated,
+            local_abbrev,
+            dictionary_category_id,
+            display_key,
+            sort_order,
+            name_localization_id
+        ) VALUES
+            (nextval('dictionary_seq'),'Y','Intervention Chirurgicale',now(),'InterventionChri',(SELECT id FROM clinlims.dictionary_category WHERE description = 'procedures' LIMIT 1),'label.chirugie',70005,NULL);
+    </sql>
+</changeSet>
+
+
+
+
+<changeSet author="CIV developer Group" id="20242009105032" context="ci_TB">
+    <preConditions onFail="MARK_RAN">
+        <sqlCheck expectedResult="1">SELECT count(*) FROM
+            clinlims.dictionary_category WHERE description = 'dispositif' limit 1</sqlCheck>
+    </preConditions>
+    <sql>
+        INSERT INTO clinlims.dictionary (
+            id,
+            is_active,
+            dict_entry,
+            lastupdated,
+            local_abbrev,
+            dictionary_category_id,
+            display_key,
+            sort_order,
+            name_localization_id
+        ) VALUES
+
+            (nextval('dictionary_seq'),'Y','matériel de chirurgie',now(),'matchirurgie',(SELECT id FROM clinlims.dictionary_category WHERE description = 'dispositif'  LIMIT 1),'label.matchirurgie',70006,NULL);
+                     
+    </sql>
+</changeSet>
+
+
+
+	
+	
+	
+	
+
+</databaseChangeLog>

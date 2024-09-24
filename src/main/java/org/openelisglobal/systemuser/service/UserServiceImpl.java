@@ -194,6 +194,8 @@ public class UserServiceImpl implements UserService {
     
     @Override
     public List<IdValuePair> getUserSampleTypes(String systemUserId, String roleName, String testSectionName) {
+    	//System.out.println("testSectionName: "+testSectionName);
+    	//System.out.println("roleName: "+roleName);
         String resultsRoleId = roleService.getRoleByName(roleName).getId();
         List<IdValuePair> testSections = getUserTestSections(systemUserId, resultsRoleId);
         TestSection testSection = testSectionService.getTestSectionByName(testSectionName);
@@ -205,9 +207,11 @@ public class UserServiceImpl implements UserService {
         List<String> allTBTestIds = typeOfSampleService.getAllActiveTestsByTestUnit(true, testUnitIds).stream().map(e->e.getId()).collect(Collectors.toList());
         List<IdValuePair> allSampleTypes = DisplayListService.getInstance().getList(ListType.SAMPLE_TYPE_ACTIVE);
         Set<String> sampleIds = new HashSet<>();
+       
         
         // clear cache to create a fresh Map of testId To TypeOfSample
         typeOfSampleService.clearCache();
+        
         
         List<String> allSampleTypesIds = DisplayListService.getInstance().getList(ListType.SAMPLE_TYPE_ACTIVE).stream().map(e->e.getId()).collect(Collectors.toList());
         allSampleTypesIds.forEach(sid->{
@@ -219,6 +223,15 @@ public class UserServiceImpl implements UserService {
 
         List<IdValuePair> userSampleTypes = allSampleTypes.stream().filter(type -> sampleIds.contains(type.getId()))
                 .collect(Collectors.toList());
+      //   System.out.println("userSampleTypes: "+userSampleTypes);
+      //   System.out.println("sampleIds :"+ sampleIds);
+       //  System.out.println("allTBTestIds :"+ allTBTestIds);
+       //  System.out.println("testUnitIds :"+ testUnitIds);
+         
+       //  System.out.println("resultsRoleId :"+ resultsRoleId);
+       //  System.out.println("testSections :"+ testSections);
+         
+         
         return userSampleTypes;
     }
 

@@ -82,7 +82,6 @@
 		</insert>
 	</changeSet>
 
-
 <!-- TB dictionary entries -->
 
 	<changeSet author="CIV developer Group" id="2023091530" context="ci_TB">
@@ -171,6 +170,7 @@
 			'dictionary.tb.phenotypic_tests',60006,null);
 		</sql>
 	</changeSet>
+	
 	<changeSet author="CIV developer Group" id="2023091534" context="ci_TB">
 		<preConditions onFail="MARK_RAN">
 			<tableExists tableName="dictionary" schemaName="clinlims" />

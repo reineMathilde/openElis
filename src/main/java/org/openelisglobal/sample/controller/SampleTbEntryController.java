@@ -107,7 +107,7 @@ public class SampleTbEntryController extends BaseSampleEntryController {
 	@Autowired
 	private FhirConfig fhirConfig;
 	@Autowired
-	private FhirUtil fhirUtil;
+	private FhirUtil fhirUtil;          
 	@Autowired
 	private UserService userService;
 	@Autowired
@@ -170,6 +170,9 @@ public class SampleTbEntryController extends BaseSampleEntryController {
 
 		return findForward(FWD_FAIL_INSERT, form);
 	}
+	
+	
+	
 
 	private void setDisplayLists(SampleTbEntryForm form) {
 		List<Dictionary> listOfDictionary = new ArrayList<>();
@@ -204,6 +207,7 @@ public class SampleTbEntryController extends BaseSampleEntryController {
 	public ResponseEntity<Map<String, Object>> getPanelTestsElement(@RequestParam("method") String method) {
 		Map<String, Object> response = new HashMap<String, Object>();
 		try {
+			 System.out.println("Début de la méthode getPanelTestsElement avec method: " + method);
 			List<Test> tests = testService.getTbTestByMethod(method);
 			List<Panel> panels = testService.getTbPanelsByMethod(method);
 			List<Map<String, Object>> testsList = new ArrayList<Map<String, Object>>();
@@ -243,7 +247,8 @@ public class SampleTbEntryController extends BaseSampleEntryController {
 					newPanelsList.add(elm);
 				}
 			});
-
+			   System.out.println("tests: " + testsList);
+			   System.out.println("panels: " + newPanelsList);
 			response.put("tests", testsList);
 			response.put("panels", newPanelsList);
 		} catch (Exception e) {

@@ -48,6 +48,9 @@ public class TestResultItem implements ResultItem, Serializable {
     private String accessionNumber;
     private String sequenceNumber;
     private boolean showSampleDetails = true;
+    
+
+
     /*
      * What the h*** is a group separator? It is a work around for the grouped
      * results forms. If the issue were just displaying there wouldn't be an issue
@@ -499,7 +502,8 @@ public class TestResultItem implements ResultItem, Serializable {
         testMethod = method == Method.AUTO ? "Auto" : "Manual";
     }
 
-    @Override
+
+	@Override
     public String getTestName() {
         return testName;
     }

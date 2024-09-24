@@ -75,7 +75,7 @@ public class DisplayListService implements LocaleChangeListener {
 
 	public enum ListType {
 		HOURS, MINS, SAMPLE_TYPE_ACTIVE, SAMPLE_TYPE_INACTIVE, SAMPLE_TYPE, INITIAL_SAMPLE_CONDITION,
-		SAMPLE_PATIENT_PAYMENT_OPTIONS, PATIENT_HEALTH_REGIONS, PATIENT_MARITAL_STATUS, PATIENT_NATIONALITY,
+		SAMPLE_PATIENT_PAYMENT_OPTIONS, PATIENT_HEALTH_REGIONS,PATIENT_HEALTH_DISTRICTS, PATIENT_MARITAL_STATUS, PATIENT_NATIONALITY,
 		PATIENT_EDUCATION, GENDERS, SAMPLE_PATIENT_REFERRING_CLINIC, SAMPLE_PATIENT_CLINIC_DEPARTMENT, QA_EVENTS,
 		TEST_SECTION_ACTIVE, TEST_SECTION_INACTIVE, TEST_SECTION_BY_NAME, HAITI_DEPARTMENTS, PATIENT_SEARCH_CRITERIA,
 		PANELS, PANELS_ACTIVE, PANELS_INACTIVE, ORDERABLE_TESTS, ALL_TESTS, REJECTION_REASONS, REFERRAL_REASONS,
@@ -84,7 +84,8 @@ public class DisplayListService implements LocaleChangeListener {
 		SEVERITY_CONSEQUENCES_LIST, SEVERITY_RECURRENCE_LIST, ACTION_TYPE_LIST, LABORATORY_COMPONENT, SAMPLE_NATURE,
 		ELECTRONIC_ORDER_STATUSES, METHODS, METHODS_INACTIVE, METHOD_BY_NAME, PRACTITIONER_PERSONS, ORDER_PRIORITY,
 		TB_ORDER_REASONS, TB_DIAGNOSTIC_REASONS, TB_FOLLOWUP_REASONS, TB_ANALYSIS_METHODS, TB_SAMPLE_ASPECTS,
-		TB_FOLLOWUP_LINE1, TB_FOLLOWUP_LINE2, ARV_ORG_LIST
+		TB_FOLLOWUP_LINE1, TB_FOLLOWUP_LINE2, ARV_ORG_LIST, s,MICROBIO_GESTES_INVASIF,EDUCATION_LIST,
+		SERVICE_LIST,PROVIDER_PAYMENT,EPIDEMIOLOGIQUE_LIST,MICROBIO_CLINICAL_INFO, ORDER_TYPE, URGENT,TYPE_DEMANDE,DISPOSITIF_DEMEURRE,ETAT_SPECIMEN, NO_CONFORMITY
 	}
 
 	private static Map<ListType, List<IdValuePair>> typeToListMap;
@@ -160,6 +161,8 @@ public class DisplayListService implements LocaleChangeListener {
 				createFromDictionaryCategoryLocalizedSort("specimen reception condition"));
 		typeToListMap.put(ListType.SAMPLE_NATURE, createFromDictionaryCategoryLocalizedSort("specimen nature"));
 		typeToListMap.put(ListType.PATIENT_HEALTH_REGIONS, createPatientHealthRegions());
+		
+		//typeToListMap.put(ListType.PATIENT_HEALTH_DISTRICTS,createDistrictsByRegion());
 		typeToListMap.put(ListType.PATIENT_MARITAL_STATUS,
 				createFromDictionaryCategoryLocalizedSort("Marital Status Demographic Information"));
 		typeToListMap.put(ListType.PATIENT_NATIONALITY,
@@ -197,6 +200,7 @@ public class DisplayListService implements LocaleChangeListener {
 		typeToListMap.put(ListType.ACTION_TYPE_LIST, createActionTypeList());
 		typeToListMap.put(ListType.LABORATORY_COMPONENT, createLaboratoryComponentList());
 		typeToListMap.put(ListType.ORDER_PRIORITY, createSamplePriorityList());
+		
 		typeToListMap.put(ListType.TB_ORDER_REASONS, createDictionaryListForCategory("TB Order Reasons"));
 		typeToListMap.put(ListType.TB_DIAGNOSTIC_REASONS, createDictionaryListForCategory("TB Diagnostic Reasons"));
 		typeToListMap.put(ListType.TB_FOLLOWUP_REASONS, createDictionaryListForCategory("TB Followup Reasons"));
@@ -205,6 +209,28 @@ public class DisplayListService implements LocaleChangeListener {
 		typeToListMap.put(ListType.TB_FOLLOWUP_LINE1, createTBFollowupLine1List());
 		typeToListMap.put(ListType.TB_FOLLOWUP_LINE2, createTBFollowupLine2List());
 		typeToListMap.put(ListType.ARV_ORG_LIST, createArvOrgList());
+		typeToListMap.put(ListType.MICROBIO_CLINICAL_INFO, createDictionaryListForCategory("clinical Information"));
+		typeToListMap.put(ListType.MICROBIO_GESTES_INVASIF, createDictionaryListForCategory("procedures"));
+	
+		typeToListMap.put(ListType.EDUCATION_LIST, createDictionaryListForCategory("educations"));
+		
+		typeToListMap.put(ListType.SERVICE_LIST, createDictionaryListForCategory("originalservice"));
+		
+		typeToListMap.put(ListType.PROVIDER_PAYMENT, createDictionaryListForCategory("payment"));
+	
+		typeToListMap.put(ListType.ORDER_TYPE, createDictionaryListForCategory("order Type"));
+		
+		typeToListMap.put(ListType.URGENT, createDictionaryListForCategory("urgent"));
+		//typeToListMap.put(ListType.EPIDEMIOLOGIQUE_LIST, createDictionaryListForCategory("epidemiologique"));
+		
+		typeToListMap.put(ListType.TYPE_DEMANDE, createDictionaryListForCategory("exam Request"));
+		
+		typeToListMap.put(ListType.DISPOSITIF_DEMEURRE, createDictionaryListForCategory("dispositif"));
+		
+		typeToListMap.put(ListType.ETAT_SPECIMEN, createDictionaryListForCategory("specimens"));
+		typeToListMap.put(ListType.NO_CONFORMITY, createDictionaryListForCategory("no conformity"));
+		
+	
 	}
 
 	public List<IdValuePair> getList(ListType listType) {
@@ -338,6 +364,8 @@ public class DisplayListService implements LocaleChangeListener {
 				createFromDictionaryCategoryLocalizedSort("specimen reception condition"));
 		typeToListMap.put(ListType.SAMPLE_NATURE, createFromDictionaryCategoryLocalizedSort("specimen nature"));
 		typeToListMap.put(ListType.PATIENT_HEALTH_REGIONS, createPatientHealthRegions());
+		
+		//typeToListMap.put(ListType.PATIENT_HEALTH_DISTRICTS, createDistrictsByRegion());
 		typeToListMap.put(ListType.PATIENT_MARITAL_STATUS,
 				createFromDictionaryCategoryLocalizedSort("Marital Status Demographic Information"));
 		typeToListMap.put(ListType.PATIENT_NATIONALITY,
@@ -388,6 +416,22 @@ public class DisplayListService implements LocaleChangeListener {
 		typeToListMap.put(ListType.TB_FOLLOWUP_LINE1, createTBFollowupLine1List());
 		typeToListMap.put(ListType.TB_FOLLOWUP_LINE2, createTBFollowupLine2List());
 		typeToListMap.put(ListType.ARV_ORG_LIST, createArvOrgList());
+		typeToListMap.put(ListType.	ORDER_TYPE, createDictionaryListForCategory("order Type"));
+		typeToListMap.put(ListType.MICROBIO_CLINICAL_INFO, createDictionaryListForCategory("clinical Information"));
+		typeToListMap.put(ListType.MICROBIO_GESTES_INVASIF, createDictionaryListForCategory("procedures"));
+		typeToListMap.put(ListType.EDUCATION_LIST, createDictionaryListForCategory("educations"));
+		typeToListMap.put(ListType.SERVICE_LIST, createDictionaryListForCategory("originalservice"));
+		typeToListMap.put(ListType.PROVIDER_PAYMENT, createDictionaryListForCategory("payment"));
+		typeToListMap.put(ListType.URGENT, createDictionaryListForCategory("urgent"));
+		//typeToListMap.put(ListType.EPIDEMIOLOGIQUE_LIST, createDictionaryListForCategory("epidemiologique"));
+		typeToListMap.put(ListType.TYPE_DEMANDE, createDictionaryListForCategory("exam Request"));
+		typeToListMap.put(ListType.DISPOSITIF_DEMEURRE, createDictionaryListForCategory("dispositif"));
+		
+		typeToListMap.put(ListType.ETAT_SPECIMEN, createDictionaryListForCategory("specimens"));
+		typeToListMap.put(ListType.NO_CONFORMITY, createDictionaryListForCategory("no conformity"));
+	
+	
+		
 	}
 
 	public void refreshList(ListType listType) {
@@ -472,6 +516,11 @@ public class DisplayListService implements LocaleChangeListener {
 			typeToListMap.put(ListType.PATIENT_HEALTH_REGIONS, createPatientHealthRegions());
 			break;
 		}
+		
+		
+	
+		
+		
 		case DICTIONARY_TEST_RESULTS: {
 			typeToListMap.put(ListType.DICTIONARY_TEST_RESULTS, createDictionaryTestResults());
 		}
@@ -635,6 +684,21 @@ public class DisplayListService implements LocaleChangeListener {
 		return regionList;
 	}
 
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
 	public List<IdValuePair> addNumberingToDisplayList(List<IdValuePair> displayList) {
 		List<IdValuePair> numberedList = new ArrayList<>(displayList.size());
 		int cnt = 1;

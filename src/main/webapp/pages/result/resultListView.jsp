@@ -872,6 +872,11 @@ function /*void*/ handleEnterEvent(  ){
 					<th colspan="8"></th>
 				</tr>
 			</c:if>
+			
+			
+	 
+			
+			
 			<c:if test="${not testResult.isGroupSeparator}">
 				<c:set var="lowerBound" value="${testResult.lowerNormalRange}" />
 				<c:set var="upperBound" value="${testResult.upperNormalRange}" />
@@ -893,6 +898,7 @@ function /*void*/ handleEnterEvent(  ){
 				</c:if>
 				<c:if test="${not rowEven}">
 					<c:set var="rowColor" value='oddRow' />
+					
 				</c:if>
 
 				<%
@@ -1405,6 +1411,12 @@ function /*void*/ handleEnterEvent(  ){
 				<%
 					}
 				%>
+				
+				
+				
+				
+				
+				
 			</c:if>
 			
 		</c:forEach>
@@ -1440,3 +1452,10 @@ function /*void*/ handleEnterEvent(  ){
 		<h2><%=MessageUtil.getContextualMessage("result.noTestsFound")%></h2>
 	</c:if>
 </c:if>
+
+
+
+
+
+
+

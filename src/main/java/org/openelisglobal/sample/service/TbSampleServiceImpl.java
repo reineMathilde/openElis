@@ -194,7 +194,10 @@ public class TbSampleServiceImpl implements TbSampleService {
 		obervations.add(analysisMethod);
 		return observationHistoryService.insertAll(obervations);
 	}
-
+//Persiste les données de patient. Si le patient existe déjà, ses informations sont mises à jour, sinon un nouveau patient est créé.
+	
+	
+	
 	private Patient persistPatientData(SampleTbEntryForm formData) {
 		Patient oldPatient = null;
 		if (!GenericValidator.isBlankOrNull(formData.getTbSubjectNumber())) {
@@ -227,6 +230,8 @@ public class TbSampleServiceImpl implements TbSampleService {
 	}
 
 	// create a new Person
+	
+	//Crée une nouvelle personne et son adresse associée.
 	private Person createPersonAndAddress(SampleTbEntryForm formData) {
 		Person person = new Person();
 		person.setFirstName(formData.getPatientFirstName());

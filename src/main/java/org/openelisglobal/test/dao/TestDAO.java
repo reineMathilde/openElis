@@ -118,8 +118,19 @@ public interface TestDAO extends BaseDAO<Test, String> {
     
     List<Test> getTbTestByMethod(String method) throws LIMSRuntimeException;
     
+    
     List<Test> getTbTest() throws LIMSRuntimeException;
     
     List<Panel> getTbPanelsByMethod(String method) throws LIMSRuntimeException;
+    
+  
+    
+    
+    List<Test> getBacterioTest() throws LIMSRuntimeException;
+    List<Panel> getbacterioPanelsBySampleType(String sampleType) throws LIMSRuntimeException;
+    List<Test> getbacterioTestBySampleType(String sampleType) throws LIMSRuntimeException;
+    
+    
+    
 
 }
